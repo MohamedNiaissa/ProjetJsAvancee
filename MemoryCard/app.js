@@ -93,12 +93,41 @@ class GameCardInit {
             !el.getAttribute("class").includes("active") ? isGameFinished = false : null;
         })
 
-        if(isGameFinished) window.alert("You won !")
+        if(isGameFinished) window.alert(`You won after ${timer.getTime()} seconds`)
     }
 }
 
-const b = new FruitsCardInit();
-b.init();
+const FC = new FruitsCardInit();
+FC.init();
 
-const c = new GameCardInit();
-c.handleAttribution(b.allFruitsCard);
+const game = new GameCardInit();
+game.handleAttribution(b.allFruitsCard);
+
+class Timer {
+    constructor () {
+        this.elapsedTime = null;
+        this.origin = null;
+        this.pause = false;
+        this.timer = null;
+    }
+
+    init() {
+        this.origin = Date.now();
+        this.runningTimer();
+    }
+
+    runningTimer() {
+        this.elapsedTime = Math.round((Date.now() - this.origin)/1000);
+        console.log(this.elapsedTime)
+
+        cancelAnimationFrame(this.timer);
+        this.pause ? null : this.timer = requestAnimationFrame(() => this.runningTimer());
+    }
+
+    getTime() {
+        return this.elapsedTime;
+    }
+}
+  
+const timer = new Timer();
+timer.init();
