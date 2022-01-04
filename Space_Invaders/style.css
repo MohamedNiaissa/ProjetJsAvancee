@@ -1,3 +1,4 @@
+
 .grille {
     display: flex;
     flex-wrap: wrap;
@@ -23,11 +24,6 @@ h3 {
     text-align: center;
     margin: 20px 0;
 }
-
-/* .grille div {
-    width: 25px;
-    height: 54px;
-} */
 
 .tireur {
     background: url(ressources/vaisseau.png);
