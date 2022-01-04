@@ -18,7 +18,7 @@ class FruitsCardInit {
     }
     
     quickShuffle(array) {
-        return array.sort(() => 0.9 - Math.random())
+        return array.sort(() => 0.6 - Math.random())
     }
     
     init() {
