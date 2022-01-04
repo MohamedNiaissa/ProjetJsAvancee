@@ -2,11 +2,10 @@ class GridPatern {
 
     constructor() {
         this.mov = 0;
+        this.movBullet = 0;
         this.boolAvance = true; 
         this.boolLeft = true;
         this.boolRightt = true;
-
-
     }
 
 
@@ -69,12 +68,24 @@ class GridPatern {
                         position+=7;
                         playerShip.remove()
                         gridCase[position].appendChild(playerShip);
-                    }else{
-                        position = position
                     }
                 }
         })
 
+    }
+
+
+    playerAttack(){
+        const gridCase = document.querySelectorAll("#case");
+
+        document.addEventListener('keyup',function(e){
+            if(e.keyCode == 32){
+                gridCase[this.movBullet].appendChild(document.createElement('div'))
+                let bullet = divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: green;')
+            }
+           
+        })
+        
     }
 
     handleEnemiesPatern() {
@@ -120,11 +131,14 @@ class GridPatern {
         this.mov--
         this.handleEnemiesPatern();
     }
+
+   
 }
 
 const initGrid = new GridPatern();
 initGrid.createGrid();
 initGrid.handlePlayerPatern();
+initGrid.playerAttack();
 
 async function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
