@@ -33,12 +33,14 @@ class FruitsCardInit {
 }
 
 const fetchAllCardHolder = document.querySelectorAll(".carte");
-console.log(fetchAllCardHolder);
-console.log(fetchAllCardHolder[0].childNodes[1].childNodes[1].childNodes[1])
+const fetchAllCardSwitch = document.querySelectorAll(".double-face");
 
 class GameCardInit {
     constructor() {
         this.att = 0;
+        this.card = null;
+        this.numberActive = 0;
+        this.gameDone = null;
     }
 
     handleAttribution(array) {
@@ -47,6 +49,51 @@ class GameCardInit {
             fetchAllCardHolder[this.att].childNodes[1].childNodes[1].childNodes[1].setAttribute("src", el.img);
             this.att++;
         })
+
+        this.handleCardEvent();
+    }
+
+   handleCardEvent() {
+
+        fetchAllCardSwitch.forEach(el => {
+            const self = this;
+
+            el.addEventListener("click", function() {
+
+                if(!this.getAttribute("class").includes("active") && self.numberActive < 2) {
+                    this.setAttribute("class", "double-face active");
+                    self.numberActive++;
+
+                    if(self.card === null) self.card = this;
+                    else if(self.card !== null) {
+                        if(self.card.parentNode.getAttribute("data-attr") !== this.parentNode.getAttribute("data-attr")) {
+                            const node = this;
+                            setTimeout( function() {
+                                self.card.setAttribute("class", "double-face");
+                                node.setAttribute("class", "double-face");
+                                self.card = null;
+                                self.numberActive = 0;
+                            }, 1000);
+                        } else {
+                            self.card = null;
+                            self.numberActive = 0;
+                        }
+                    }
+
+                    self.verifyIfGameEnded();
+                }
+            });
+        })
+    }
+
+    verifyIfGameEnded() {
+        let isGameFinished = true;
+
+        fetchAllCardSwitch.forEach(el => {
+            !el.getAttribute("class").includes("active") ? isGameFinished = false : null;
+        })
+
+        if(isGameFinished) window.alert("You won !")
     }
 }
 
