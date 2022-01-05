@@ -1,11 +1,19 @@
+const btnContainer = document.createElement("div");
+btnContainer.setAttribute("class", "btnContainer");
+const resetButton = document.createElement("button");
+resetButton.innerHTML = "Restart";
+resetButton.setAttribute("class", "design toggleHide");
+btnContainer.appendChild(resetButton);
+document.body.insertBefore(btnContainer, document.body.childNodes[2]);
+
 class FruitsCardInit {
     constructor() {
         this.allFruitsCard = [];
     }
 
     allFruits = [
-        { name: "banana",  img : "./ressources/apple.svg",   }, 
-        { name: "apple",   img : "./ressources/banana.svg",  }, 
+        { name: "banana",  img : "./ressources/banana.svg",   }, 
+        { name: "apple",   img : "./ressources/apple.svg",  }, 
         { name: "brocoli", img : "./ressources/brocoli.svg", }, 
         { name: "cherry",  img : "./ressources/cherry.svg",  }, 
         { name: "pepper",  img : "./ressources/pepper.svg",  }, 
@@ -22,6 +30,8 @@ class FruitsCardInit {
     }
     
     init() {
+        this.allFruitsCard = [];
+
         this.allFruits.forEach(el => {
             for(let clone = 0; clone < 2; clone++) {
                 this.allFruitsCard.push(new this.Card(el.name, el.img));
@@ -50,6 +60,7 @@ class GameCardInit {
             this.att++;
         })
 
+        this.att = 0;
         this.handleCardEvent();
     }
 
@@ -93,7 +104,25 @@ class GameCardInit {
             !el.getAttribute("class").includes("active") ? isGameFinished = false : null;
         })
 
-        if(isGameFinished) window.alert(`You won after ${timer.getTime()} seconds`)
+        if(isGameFinished) {
+            resetButton.setAttribute("class", "design toggleVisibile")
+            window.alert(`You won after ${timer.getTime()} seconds`);
+            timer.reset();
+
+            resetButton.addEventListener("click", function() {
+                resetButton.setAttribute("class", "design toggleHide");
+                
+                fetchAllCardSwitch.forEach(el => {
+                    !el.classList.remove("active");
+                })
+
+                this.gameDone = false;
+
+                FC.init();
+                game.handleAttribution(FC.allFruitsCard)
+                timer.init();
+            })
+        }
     }
 }
 
@@ -101,18 +130,19 @@ const FC = new FruitsCardInit();
 FC.init();
 
 const game = new GameCardInit();
-game.handleAttribution(b.allFruitsCard);
+game.handleAttribution(FC.allFruitsCard);
 
 class Timer {
     constructor () {
         this.elapsedTime = null;
         this.origin = null;
-        this.pause = false;
+        this.timerKill = null;
         this.timer = null;
     }
 
     init() {
         this.origin = Date.now();
+        this.timerKill = false;
         this.runningTimer();
     }
 
@@ -121,11 +151,16 @@ class Timer {
         console.log(this.elapsedTime)
 
         cancelAnimationFrame(this.timer);
-        this.pause ? null : this.timer = requestAnimationFrame(() => this.runningTimer());
+        this.timerKill ? null : this.timer = requestAnimationFrame(() => this.runningTimer());
     }
 
     getTime() {
         return this.elapsedTime;
+    }
+
+    reset() {
+        this.timerKill = true;
+        this.timer = null;
     }
 }
   
