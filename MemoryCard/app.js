@@ -1,168 +1,216 @@
-const btnContainer = document.createElement("div");
-btnContainer.setAttribute("class", "btnContainer");
-const resetButton = document.createElement("button");
-resetButton.innerHTML = "Restart";
-resetButton.setAttribute("class", "design toggleHide");
-btnContainer.appendChild(resetButton);
-document.body.insertBefore(btnContainer, document.body.childNodes[2]);
+class GameResetOption {
+    /**
+     * 
+     */
 
-class FruitsCardInit {
+    #elementCreated; #btnContainer; #resetBtn; #fetchResetBtn;
+
     constructor() {
-        this.allFruitsCard = [];
+        this.#elementCreated = null;
+        this.#btnContainer = document.createElement("div");
+        this.#resetBtn = document.createElement("button");
+        this.#fetchResetBtn = this.#resetBtn;
     }
 
-    allFruits = [
-        { name: "banana",  img : "./ressources/banana.svg",   }, 
-        { name: "apple",   img : "./ressources/apple.svg",  }, 
-        { name: "brocoli", img : "./ressources/brocoli.svg", }, 
-        { name: "cherry",  img : "./ressources/cherry.svg",  }, 
-        { name: "pepper",  img : "./ressources/pepper.svg",  }, 
-        { name: "straw",   img : "./ressources/straw.svg",   },
-    ]
+    setUp() {
+        if(this.#elementCreated !== null) return;
 
-    Card = function(name, img) {
-        this.name = name;
-        this.img = img;
+        this.#btnContainer.setAttribute("class", "btnContainer");
+        this.#resetBtn.setAttribute("class", "design toggleHide");
+        this.#resetBtn.innerHTML = "Restart";
+
+        this.#btnContainer.appendChild(this.#resetBtn);
+        document.body.insertBefore(this.#btnContainer, document.body.childNodes[2]);
+
+        this.#fetchResetBtn = this.#resetBtn;
+        this.#elementCreated = true;
     }
-    
-    quickShuffle(array) {
-        return array.sort(() => 0.6 - Math.random())
+
+    display() {
+        this.#fetchResetBtn.classList.replace("toggleHide", "toggleVisible");
     }
-    
-    init() {
-        this.allFruitsCard = [];
 
-        this.allFruits.forEach(el => {
-            for(let clone = 0; clone < 2; clone++) {
-                this.allFruitsCard.push(new this.Card(el.name, el.img));
-            }
-        });
+    hide() {
+        this.#fetchResetBtn.classList.replace("toggleVisible", "toggleHide")
+    }
 
-        this.quickShuffle(this.allFruitsCard);
+    fetchRBtn() {
+        return this.#fetchResetBtn;
     }
 }
 
-const fetchAllCardHolder = document.querySelectorAll(".carte");
-const fetchAllCardSwitch = document.querySelectorAll(".double-face");
+class GameShuffleProcess {
+    /**
+     * 
+     */
 
-class GameCardInit {
+    #cardsContent;
+    #fruitsProperties = [
+        { name: "banana",  icon : "./ressources/banana.svg",  }, 
+        { name: "apple",   icon : "./ressources/apple.svg",   }, 
+        { name: "brocoli", icon : "./ressources/brocoli.svg", }, 
+        { name: "cherry",  icon : "./ressources/cherry.svg",  }, 
+        { name: "pepper",  icon : "./ressources/pepper.svg",  }, 
+        { name: "straw",   icon : "./ressources/straw.svg",   },
+    ]
+
     constructor() {
-        this.att = 0;
-        this.card = null;
-        this.numberActive = 0;
-        this.gameDone = null;
+        this.#fruitsProperties;
+        this.#cardsContent;;
     }
 
-    handleAttribution(array) {
-        array.forEach(el => {
-            fetchAllCardHolder[this.att].setAttribute("data-attr", el.name);
-            fetchAllCardHolder[this.att].childNodes[1].childNodes[1].childNodes[1].setAttribute("src", el.img);
-            this.att++;
+    setUp() {
+        this.#cardsContent = [];
+        this.#fruitsProperties.forEach(fruit => {
+            for(let dbl = 0; dbl < 2; dbl++) {
+                this.#cardsContent.push(new this.#Card(fruit.name, fruit.icon));
+            }
+        });
+
+        this.#arrayShuffle(this.#cardsContent);
+    }
+
+    #arrayShuffle(cards) {
+        return cards.sort(() => 0.6 - Math.random())
+    }
+
+    #Card = function(name, icon) {
+        this.name = name;
+        this.icon = icon;
+    }
+
+    fetchCards() {
+        return this.#cardsContent;
+    }
+}
+
+class GameCore {
+    /**
+     * 
+     */
+
+    #cards; #cardsSwitch; #cardsActive; #selectedCard; #didPlayerWin;
+
+    constructor() {
+        this.#cards = document.querySelectorAll(".carte");
+        this.#cardsSwitch = document.querySelectorAll(".double-face");
+        this.#cardsActive = 0;
+        this.#selectedCard = null;
+        this.#didPlayerWin = false;
+    }
+
+    setRandomCardsPosition(cardsContent) {
+        let atIndex = 0;
+
+        cardsContent.forEach(fruit => {
+            this.#cards[atIndex].setAttribute("data-attr", fruit.name);
+            this.#cardsSwitch[atIndex].childNodes[1].childNodes[1].setAttribute("src", fruit.icon);
+            atIndex++;
         })
 
-        this.att = 0;
-        this.handleCardEvent();
+        this.#handleCardEvent();
     }
 
-   handleCardEvent() {
+    #handleCardEvent() {
+        const thisClass = this;
+        thisClass.#cardsSwitch.forEach(div => {
 
-        fetchAllCardSwitch.forEach(el => {
-            const self = this;
+            div.addEventListener("click", function() {
+                const thisNode = this;
 
-            el.addEventListener("click", function() {
+                if(!thisNode.getAttribute("class").includes("active") && thisClass.#cardsActive < 2) {
 
-                if(!this.getAttribute("class").includes("active") && self.numberActive < 2) {
-                    this.setAttribute("class", "double-face active");
-                    self.numberActive++;
+                    thisNode.classList.add("active");
+                    thisClass.#cardsActive++;
 
-                    if(self.card === null) self.card = this;
-                    else if(self.card !== null) {
-                        if(self.card.parentNode.getAttribute("data-attr") !== this.parentNode.getAttribute("data-attr")) {
-                            const node = this;
+                    if(thisClass.#selectedCard === null) thisClass.#selectedCard = thisNode;
+                    else {
+                        if(thisClass.#selectedCard.parentNode.getAttribute("data-attr") !== thisNode.parentNode.getAttribute("data-attr")) {
                             setTimeout( function() {
-                                self.card.setAttribute("class", "double-face");
-                                node.setAttribute("class", "double-face");
-                                self.card = null;
-                                self.numberActive = 0;
+                                thisClass.#selectedCard.classList.remove("active");
+                                thisNode.classList.remove("active");
+                                thisClass.#selectedCard = null;
+                                thisClass.#cardsActive = 0;
                             }, 1000);
                         } else {
-                            self.card = null;
-                            self.numberActive = 0;
+                            thisClass.#selectedCard = null;
+                            thisClass.#cardsActive = 0;
+                            thisClass.#verifyIfGameEnded();
                         }
                     }
-
-                    self.verifyIfGameEnded();
                 }
             });
         })
     }
 
-    verifyIfGameEnded() {
-        let isGameFinished = true;
+    #verifyIfGameEnded() {
+        const thisClass = this;
 
-        fetchAllCardSwitch.forEach(el => {
-            !el.getAttribute("class").includes("active") ? isGameFinished = false : null;
-        })
+        if([...thisClass.#cardsSwitch].every(div => {return div.classList.contains("active")})) {
 
-        if(isGameFinished) {
-            resetButton.setAttribute("class", "design toggleVisibile")
-            window.alert(`You won after ${timer.getTime()} seconds`);
-            timer.reset();
+            setTimeout(function() {
+                window.alert(`You won after ${GameTime.fetchTime()} seconds`);
 
-            resetButton.addEventListener("click", function() {
-                resetButton.setAttribute("class", "design toggleHide");
+                GameReset.display();
+                GameTime.reset();
                 
-                fetchAllCardSwitch.forEach(el => {
-                    !el.classList.remove("active");
+                GameReset.fetchRBtn().addEventListener("click", function() {
+                    
+                    thisClass.#cardsSwitch.forEach(card => { card.classList.remove("active"); })
+                    GameReset.hide();
+                    StartGameBoard(null);
                 })
-
-                this.gameDone = false;
-
-                FC.init();
-                game.handleAttribution(FC.allFruitsCard)
-                timer.init();
-            })
+            }, 1000);
         }
     }
 }
 
-const FC = new FruitsCardInit();
-FC.init();
+class GameTimer {
+    /**
+     * 
+     */
 
-const game = new GameCardInit();
-game.handleAttribution(FC.allFruitsCard);
+    #elapsedTime; #dateOrigin; #isStopped; #timerProcess;
 
-class Timer {
     constructor () {
-        this.elapsedTime = null;
-        this.origin = null;
-        this.timerKill = null;
-        this.timer = null;
+        this.#elapsedTime = null;
+        this.#dateOrigin = null;
+        this.#isStopped = null;
+        this.#timerProcess = null;
     }
 
-    init() {
-        this.origin = Date.now();
-        this.timerKill = false;
-        this.runningTimer();
+    setUp() {
+        this.#dateOrigin = Date.now();
+        this.#isStopped = false;
+        this.#runningTimer();
     }
 
-    runningTimer() {
-        this.elapsedTime = Math.round((Date.now() - this.origin)/1000);
-        console.log(this.elapsedTime)
+    #runningTimer() {
+        this.#elapsedTime = Math.round((Date.now() - this.#dateOrigin)/1000);
 
-        cancelAnimationFrame(this.timer);
-        this.timerKill ? null : this.timer = requestAnimationFrame(() => this.runningTimer());
-    }
-
-    getTime() {
-        return this.elapsedTime;
+        cancelAnimationFrame(this.#timerProcess);
+        this.#isStopped ? null : this.#timerProcess = requestAnimationFrame(() => this.#runningTimer());
     }
 
     reset() {
-        this.timerKill = true;
-        this.timer = null;
+        this.#isStopped = true;
+        this.#timerProcess = null;
+    }
+
+    fetchTime() {
+        return this.#elapsedTime;
     }
 }
-  
-const timer = new Timer();
-timer.init();
+
+function StartGameBoard(string) {
+    if(string === "launch") GameReset.setUp();
+    GameShuffle.setUp();
+    GameGameplay.setRandomCardsPosition(GameShuffle.fetchCards());
+    GameTime.setUp();
+}
+
+const GameReset = new GameResetOption();
+const GameShuffle = new GameShuffleProcess();
+const GameGameplay = new GameCore();
+const GameTime = new GameTimer();
+StartGameBoard("launch");
