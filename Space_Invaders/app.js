@@ -6,6 +6,9 @@ class GridPatern {
         this.sideReached = null;
         this.newRow = false;
         this.gameOver = false;
+        this.disableAttack = true;
+        this.clonemov = 0;
+        this.boolEnnemies = false;
     }
 
 
@@ -70,56 +73,64 @@ class GridPatern {
     }
     sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
-      }
+    }
    
     async moveBullet(position){
         const gridCase = document.querySelectorAll("#case");
         let positionSheep = position +7;
-        console.log("delete");
-        console.log("position = " + positionSheep);
+
+        this.disableAttack = false;
+        //console.log("position = " + positionSheep);
 
         if(positionSheep <= 62 && positionSheep >=56){
-            console.log("1re ligne")
 
             for(var i = 0;i<8;i++){
                 let divbullet = gridCase[position-7*i].appendChild(document.createElement('div'));
                 divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: green;');   
-                await sleep(500);
-                divbullet.remove()     
+                await sleep(700/7); // boucle parcouru 7 fois donc on divise par 7
+                divbullet.remove() 
+
             }
+
             
         }else if(positionSheep <=55 && positionSheep >= 49 ){
-            console.log("2e ligne")
 
             for(var i = 0;i<7;i++){
 
                 let divbullet = gridCase[position-7*i].appendChild(document.createElement('div'));
                 divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: green;');   
-                await sleep(500);
+                await sleep(700/7);
                 divbullet.remove()     
             }
+
         }else if(positionSheep <= 48 && positionSheep >= 42){
-            console.log("3e ligne")
 
             for(var i = 0;i<6;i++){
                 let divbullet = gridCase[position-7*i].appendChild(document.createElement('div'));
                 divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: green;');   
-                await sleep(500);
+                await sleep(700/7);
                 divbullet.remove()     
             }
+
         }
+        
+        await sleep(300)  // Compensation avec les precedents await pour obtenir 1 sec
+        this.disableAttack = true;
+
+        // this.disableAttack = false;
+ 
      
+
     }
 
   
       
     playerAttack(positionShip){
-        console.log("passfunction")
 
         let movBullet =  positionShip-7;
-            console.log(positionShip)
+            // console.log(positionShip)
 
-            console.log('movBullet = ' + movBullet)
+            // console.log('movBullet = ' + movBullet)
            
             this.moveBullet(movBullet)
     }
@@ -146,13 +157,10 @@ class GridPatern {
                 }
             }
 
-            else if(e.keyCode == 32){
-                console.log("condtion space")
+            else if(e.keyCode == 32 && self.disableAttack ){
                 self.playerAttack(position)
             }
-       
                 
-                    
         });  
     }
 
@@ -197,22 +205,48 @@ class GridPatern {
     }
 
     handleNextDirection() {
-        if(this.sideReached === null) return this.mov++;
-        if(this.sideReached === "right") return this.mov--;
-        if(this.sideReached === "left") { this.newRow = true; return this.mov += 7; }
+        if(this.sideReached === null){ 
+            this.clonemov++;
+            console.log(this.mov)
+            this.compareBulletToEnnemies(this.mov);
+
+            return this.mov++;}
+        if(this.sideReached === "right"){   
+            this.boolEnnemies = "true"          
+            console.log('r ' +this.mov)
+            this.clonemov--;
+            this.compareBulletToEnnemies(this.mov);
+
+            return this.mov--;}
+        if(this.sideReached === "left") {        
+            this.boolEnnemies = "false"          
+
+            console.log(this.mov)
+            this.clonemov+=7;
+            this.compareBulletToEnnemies(this.mov);
+
+            this.newRow = true; return this.mov += 7; }
+
     }
+
+    compareBulletToEnnemies(mooveShipEnnemie){
+
+
+        this.patern.forEach(i => {
+            console.log("position ennemie = "+(i+mooveShipEnnemie))
+        })
+
+        console.log("mooove = "+ mooveShipEnnemie)
+                   
+    }
+
 }
 
 const initGrid = new GridPatern();
 initGrid.createGrid();
 initGrid.handlePlayerPatern();
 initGrid.getPosition();
-
-
-
-
-
-
+initGrid.getPositionEnnemie();
 
 
 async function sleep(ms) {
@@ -221,7 +255,7 @@ async function sleep(ms) {
 
 let k = 0; 
 async function loop() {
-    await sleep(500);
+    await sleep(1300);
     initGrid.handleMovementPatern();
     if(initGrid.gameOver) {
         window.alert("Game over !");
