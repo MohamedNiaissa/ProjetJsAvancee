@@ -2,6 +2,7 @@ class GridPatern {
 
     constructor() {
         this.mov = 0;
+        this.movBullet = 0;
         this.sideReached = null;
         this.newRow = false;
         this.gameOver = false;
@@ -42,7 +43,6 @@ class GridPatern {
                 
                 if(position !== 48 && position !== 55 && position && position !== 62){
                     position++;
-
                     playerShip.remove()
                     gridCase[position].appendChild(playerShip);
                 }
@@ -51,8 +51,7 @@ class GridPatern {
                         position--;
                         playerShip.remove()
                         gridCase[position].appendChild(playerShip);        
-
-                    }else{position}
+                    }
               
                 }else if(e.keyCode ==  38){ //up
                     if(position > 48){
@@ -71,6 +70,62 @@ class GridPatern {
         })
 
     }
+
+    
+    playerAttack(positionShip){
+        const gridCase = document.querySelectorAll("#case");
+        console.log("passfunction")
+
+        let movBullet =  positionShip-7;
+        // document.addEventListener('keyup',function(e){  })
+            console.log(positionShip)
+
+            console.log('movBullet = ' + movBullet)
+            let divbullet = gridCase[movBullet].appendChild(document.createElement('div'));
+            divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: green;');
+        
+
+            // movBullet = 0;
+            // // gridCase[0].remove;
+      
+
+        
+        
+    }
+    getPosition(){
+        let position = 59;
+        let self = this;
+        document.addEventListener("keyup",function(e){
+            if(e.keyCode == 39){  //right
+                if(position !== 48 && position !== 55 && position && position !== 62){
+                    position++;
+                }
+            }else if(e.keyCode == 37 ){  //left
+                if(position !== 42 && position !== 49 && position && position !== 56){
+                    position--;
+                }
+            }else if(e.keyCode ==  38){ //up
+                if(position > 48){
+                    position-=7;
+                }
+            }else if(e.keyCode == 40){ //down
+                if(position < 56){
+                    position+=7;
+                }
+            }
+
+            else if(e.keyCode == 32){
+                console.log("condtion space")
+                self.playerAttack(position)
+            }
+       
+                
+                    
+        });  
+    }
+
+
+
 
     handleEnemiesPatern() {
         const gridCase = document.querySelectorAll("#case");
@@ -119,6 +174,14 @@ class GridPatern {
 const initGrid = new GridPatern();
 initGrid.createGrid();
 initGrid.handlePlayerPatern();
+initGrid.getPosition();
+
+
+
+
+
+
+
 
 async function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
