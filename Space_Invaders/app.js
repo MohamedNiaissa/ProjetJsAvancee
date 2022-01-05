@@ -8,6 +8,8 @@ class GridPatern {
         this.gameOver = false;
         this.disableAttack = true;
         this.clonemov = 0;
+        this.listeposBullet = [];
+        this.listeposEnnemyShip = [];
         this.boolEnnemies = false;
     }
 
@@ -78,6 +80,7 @@ class GridPatern {
     async moveBullet(position){
         const gridCase = document.querySelectorAll("#case");
         let positionSheep = position +7;
+        
 
         this.disableAttack = false;
         //console.log("position = " + positionSheep);
@@ -86,10 +89,13 @@ class GridPatern {
 
             for(var i = 0;i<8;i++){
                 let divbullet = gridCase[position-7*i].appendChild(document.createElement('div'));
+                let valuePosBullet = this.compareBulletToEnnemies2(position-7*i);
+                this.listeposBullet.push(valuePosBullet)
+
+               
                 divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: green;');   
                 await sleep(700/7); // boucle parcouru 7 fois donc on divise par 7
                 divbullet.remove() 
-
             }
 
             
@@ -98,6 +104,8 @@ class GridPatern {
             for(var i = 0;i<7;i++){
 
                 let divbullet = gridCase[position-7*i].appendChild(document.createElement('div'));
+                let valuePosBullet = this.compareBulletToEnnemies2(position-7*i);
+                this.listeposBullet.push(valuePosBullet)
                 divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: green;');   
                 await sleep(700/7);
                 divbullet.remove()     
@@ -107,6 +115,8 @@ class GridPatern {
 
             for(var i = 0;i<6;i++){
                 let divbullet = gridCase[position-7*i].appendChild(document.createElement('div'));
+                let valuePosBullet = this.compareBulletToEnnemies2(position-7*i);
+                this.listeposBullet.push(valuePosBullet)
                 divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: green;');   
                 await sleep(700/7);
                 divbullet.remove()     
@@ -119,12 +129,10 @@ class GridPatern {
 
         // this.disableAttack = false;
  
-     
-
+    
     }
 
   
-      
     playerAttack(positionShip){
 
         let movBullet =  positionShip-7;
@@ -163,8 +171,6 @@ class GridPatern {
                 
         });  
     }
-
-
 
 
     handleEnemiesPatern() {
@@ -207,13 +213,13 @@ class GridPatern {
     handleNextDirection() {
         if(this.sideReached === null){ 
             this.clonemov++;
-            console.log(this.mov)
+            // console.log(this.mov)
             this.compareBulletToEnnemies(this.mov);
 
             return this.mov++;}
         if(this.sideReached === "right"){   
             this.boolEnnemies = "true"          
-            console.log('r ' +this.mov)
+            // console.log('r ' +this.mov)
             this.clonemov--;
             this.compareBulletToEnnemies(this.mov);
 
@@ -221,7 +227,7 @@ class GridPatern {
         if(this.sideReached === "left") {        
             this.boolEnnemies = "false"          
 
-            console.log(this.mov)
+            // console.log(this.mov)
             this.clonemov+=7;
             this.compareBulletToEnnemies(this.mov);
 
@@ -229,15 +235,64 @@ class GridPatern {
 
     }
 
-    compareBulletToEnnemies(mooveShipEnnemie){
+    compareBulletToEnnemies2(mooveShipEnnemie){
 
+        // console.log("position bullet = "+(mooveShipEnnemie))
 
+        return mooveShipEnnemie;
+    
+
+    }
+
+   async  compareBulletToEnnemies(mooveShipEnnemie,e){
+        // console.log("mooveShipEnnemie = " + this.compareBulletToEnnemies2())
+
+        const gridCase = document.querySelectorAll("#case");
+
+        let positionBullet = this.compareBulletToEnnemies2()
+
+        this.listeposEnnemyShip.length = 0;
+
+        
         this.patern.forEach(i => {
-            console.log("position ennemie = "+(i+mooveShipEnnemie))
+            // console.log("position ennemie = "+(i+mooveShipEnnemie))
+            if(!(i+mooveShipEnnemie === NaN)){this.listeposEnnemyShip.push(i+mooveShipEnnemie)}
+
+            // console.log("return positionBullet " + positionBullet)
         })
 
-        console.log("mooove = "+ mooveShipEnnemie)
+        // console.log("listeEnnemy "+ this.listeposEnnemyShip)
+        let tabPosBullet = this.listeposBullet;
+        let tabPosEnnemies = this.listeposEnnemyShip;
+        let booltouch = false;
+ 
+        console.log('b' +tabPosBullet) 
+        console.log('e'+tabPosEnnemies)
+        for(let i=this.listeposEnnemyShip.length-1;i>=0;i++){
+            for(let v=this.tabPosBullet-1;v>=0;v--){
+                if(isNaN(tabPosEnnemies[i])){
+                    await sleep(2000)
+                }
+                console.log("posE = " + "indice = " +i+" valeur = "+ tabPosEnnemies[i]);
+                console.log("posB = " + "indice = " +v+" valeur = "+ tabPosBullet[v]);
+                if(tabPosEnnemies[i]==tabPosBullet[v]){
+                    console.log("Pareiiiiiiiiillllllllllllllll, BRAVOOOOOOOOOO")
+                    break;
+                }
+            }
+            break;
+
+        } 
+        tabPosBullet.length =0;
+
+
+        return this.listeposEnnemyShip
                    
+    }
+
+
+    compareBothPositions(pos1,pos2){
+       
     }
 
 }
@@ -246,7 +301,11 @@ const initGrid = new GridPatern();
 initGrid.createGrid();
 initGrid.handlePlayerPatern();
 initGrid.getPosition();
-initGrid.getPositionEnnemie();
+
+// let bullet = initGrid.compareBulletToEnnemies();
+// initGrid.compareBothPositions(initGrid.compareBulletToEnnemies(),initGrid.compareBulletToEnnemies2())
+// initGrid.compareBulletToEnnemies2();
+// console.log("bullet = " + bullet)
 
 
 async function sleep(ms) {
