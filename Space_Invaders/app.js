@@ -33,10 +33,8 @@ class GridPatern {
         let playerShip = document.createElement('img');
         playerShip.setAttribute("src", "./ressources/vaisseau.png");
         
-
         let position = 59;
         gridCase[position].appendChild(playerShip);
-
 
         document.addEventListener("keyup",function(e){
             if(e.keyCode == 39){  //right
@@ -70,28 +68,62 @@ class GridPatern {
         })
 
     }
-
-    
-    playerAttack(positionShip){
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+   
+    async moveBullet(position){
         const gridCase = document.querySelectorAll("#case");
+        let positionSheep = position +7;
+        console.log("delete");
+        console.log("position = " + positionSheep);
+
+        if(positionSheep <= 62 && positionSheep >=56){
+            console.log("1re ligne")
+
+            for(var i = 0;i<8;i++){
+                let divbullet = gridCase[position-7*i].appendChild(document.createElement('div'));
+                divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: green;');   
+                await sleep(500);
+                divbullet.remove()     
+            }
+            
+        }else if(positionSheep <=55 && positionSheep >= 49 ){
+            console.log("2e ligne")
+
+            for(var i = 0;i<7;i++){
+
+                let divbullet = gridCase[position-7*i].appendChild(document.createElement('div'));
+                divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: green;');   
+                await sleep(500);
+                divbullet.remove()     
+            }
+        }else if(positionSheep <= 48 && positionSheep >= 42){
+            console.log("3e ligne")
+
+            for(var i = 0;i<6;i++){
+                let divbullet = gridCase[position-7*i].appendChild(document.createElement('div'));
+                divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: green;');   
+                await sleep(500);
+                divbullet.remove()     
+            }
+        }
+     
+    }
+
+  
+      
+    playerAttack(positionShip){
         console.log("passfunction")
 
         let movBullet =  positionShip-7;
-        // document.addEventListener('keyup',function(e){  })
             console.log(positionShip)
 
             console.log('movBullet = ' + movBullet)
-            let divbullet = gridCase[movBullet].appendChild(document.createElement('div'));
-            divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: green;');
-        
-
-            // movBullet = 0;
-            // // gridCase[0].remove;
-      
-
-        
-        
+           
+            this.moveBullet(movBullet)
     }
+
     getPosition(){
         let position = 59;
         let self = this;
