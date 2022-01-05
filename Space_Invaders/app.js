@@ -2,10 +2,9 @@ class GridPatern {
 
     constructor() {
         this.mov = 0;
-        this.movBullet = 0;
-        this.boolAvance = true; 
-        this.boolLeft = true;
-        this.boolRightt = true;
+        this.sideReached = null;
+        this.newRow = false;
+        this.gameOver = false;
     }
 
 
@@ -14,12 +13,11 @@ class GridPatern {
     createGrid() {
         const container = document.querySelector('.grille');
         container.setAttribute("class", "grille container");
-
+        
         const row = 9;
         const col = 7
-
-
-        for(let i = 0; i < row*col; i++) {              //Create the cases
+    
+        for(let i = 0; i < row*col; i++) {
             let gridCase = document.createElement('div');
             gridCase.setAttribute("id", "case");
             container.appendChild(gridCase);
@@ -74,20 +72,6 @@ class GridPatern {
 
     }
 
-
-    playerAttack(){
-        const gridCase = document.querySelectorAll("#case");
-
-        document.addEventListener('keyup',function(e){
-            if(e.keyCode == 32){
-                gridCase[this.movBullet].appendChild(document.createElement('div'))
-                let bullet = divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: green;')
-            }
-           
-        })
-        
-    }
-
     handleEnemiesPatern() {
         const gridCase = document.querySelectorAll("#case");
 
@@ -102,43 +86,39 @@ class GridPatern {
         })
     }
 
-    handleMovementPaternRight() {
+    
+    handleMovementPatern() {
         const gridCase = document.querySelectorAll("#case");
-        this.patern.forEach(index => {
-            gridCase[index + this.mov].removeChild(gridCase[index + this.mov].firstChild);
 
+        console.log("-----------------")
+        this.patern.forEach(index => {
+            if(this.newRow) this.sideReached = null;
+            else if([6,13,20,27,34,41,48,55].indexOf(index + this.mov) != -1) this.sideReached = "right";
+            else if([0,7,14,21,28,35,42,49].indexOf(index + this.mov) != -1)  this.sideReached = "left";
+            gridCase[index + this.mov].removeChild(gridCase[index + this.mov].firstChild);
         })
-        if(this.boolRight) {
-            this.mov+=8;
-            console.log("a driote")
-            this.boolRight = false;
-        }
-        
-        this.mov++
+
+        this.newRow = false;
+        this.handleNextDirection();
+
+        this.patern.forEach(index => {
+            console.log(index + this.mov)
+            if(index + this.mov > 55) return this.gameOver = true;
+        })
+
         this.handleEnemiesPatern();
     }
 
-    handleMovementPaternLeft() {
-        const gridCase = document.querySelectorAll("#case");
-        this.patern.forEach(index => {
-            gridCase[index + this.mov].removeChild(gridCase[index + this.mov].firstChild);
-        })
-        if(this.boolLeft) {
-            this.mov+=8;
-            this.boolLeft = false;
-        }
-        
-        this.mov--
-        this.handleEnemiesPatern();
+    handleNextDirection() {
+        if(this.sideReached === null) return this.mov++;
+        if(this.sideReached === "right") return this.mov--;
+        if(this.sideReached === "left") { this.newRow = true; return this.mov += 7; }
     }
-
-   
 }
 
 const initGrid = new GridPatern();
 initGrid.createGrid();
 initGrid.handlePlayerPatern();
-initGrid.playerAttack();
 
 async function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -146,15 +126,13 @@ async function sleep(ms) {
 
 let k = 0; 
 async function loop() {
-    await sleep(2000);
-    if(k<1){
-        initGrid.handleMovementPaternRight();
-    }else{
-        initGrid.handleMovementPaternLeft();
-        k=0
+    await sleep(500);
+    initGrid.handleMovementPatern();
+    if(initGrid.gameOver) {
+        window.alert("Game over !");
+        return 0;
     }
-    k++;
     loop();
-}
+} 
 
 loop();
