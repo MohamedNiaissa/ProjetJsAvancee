@@ -42,7 +42,6 @@ class GridPatern {
                 
                 if(position !== 48 && position !== 55 && position && position !== 62){
                     position++;
-
                     playerShip.remove()
                     gridCase[position].appendChild(playerShip);
                 }
@@ -51,8 +50,7 @@ class GridPatern {
                         position--;
                         playerShip.remove()
                         gridCase[position].appendChild(playerShip);        
-
-                    }else{position}
+                    }
               
                 }else if(e.keyCode ==  38){ //up
                     if(position > 48){
