@@ -88,11 +88,11 @@ body {
   height: 3.5vh;
 }
 
-.toggleHide {
+.hidden {
   display: none;
 }
 
-.toggleVisible {
+.visible {
   display: inline;
 }
 
