@@ -90,7 +90,7 @@ class GridPatern {
     handleMovementPatern() {
         const gridCase = document.querySelectorAll("#case");
 
-        console.log("-----------------")
+        // console.log("-----------------")
         this.patern.forEach(index => {
             if(this.newRow) this.sideReached = null;
             else if([6,13,20,27,34,41,48,55].indexOf(index + this.mov) != -1) this.sideReached = "right";
@@ -102,7 +102,7 @@ class GridPatern {
         this.handleNextDirection();
 
         this.patern.forEach(index => {
-            console.log(index + this.mov)
+            // console.log(index + this.mov)
             if(index + this.mov > 55) return this.gameOver = true;
         })
 
