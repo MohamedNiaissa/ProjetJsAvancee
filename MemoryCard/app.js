@@ -276,6 +276,7 @@ class GameCore {
 
                 GameReset.fetchLbBtn().addEventListener("click", function() {
                     GameLB.addScore(time, GameLB.fetchUsername());
+                    requestAnimationFrame(() => { GameLB.fetchNewDiv().classList.add("animatepls");})
                     GameLB.orderScore();
                     GameLB.toggleScoreWasAdded(true);
                 }, {once : true})
@@ -338,16 +339,18 @@ class GameTimer {
 }
 
 class GameLeaderboard {
-    #getScoreContainer; #isScoreAdded; #getUsername;
+    #getScoreContainer; #isScoreAdded; #getUsername; #newDiv;
 
     constructor() {
         this.#getScoreContainer = document.querySelector(".lbScore");
         this.#isScoreAdded = false;
         this.#getUsername = null;
+        this.#newDiv = null;
     }
 
     addScore(time, name) {
         const newScoreCell = document.createElement("div");
+        this.#newDiv = newScoreCell;
         const score = document.createElement("p");
 
         newScoreCell.setAttribute("class", "cell");
@@ -386,6 +389,10 @@ class GameLeaderboard {
         test.forEach(el => {
             self.#getScoreContainer.appendChild(el);
         })
+    }
+
+    fetchNewDiv() {
+        return this.#newDiv;
     }
 
     toggleScoreWasAdded(boolean) {
