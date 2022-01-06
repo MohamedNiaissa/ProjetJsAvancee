@@ -77,35 +77,6 @@ body {
   transform: rotateY(180deg)
 }
 
-.msgContainer {
-  background-color: rgb(143, 134, 134);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-flow: row wrap;
-  margin: 70px 0 0;
-}
-
-.Rbtn {
-  width: 25%;
-  height: 4vh;
-  align-self: center;
-}
-
-.Wpara {
-  width: 75%;
-  font-size: medium;
-  justify-self: flex-start;
-}
-
-.hidden {
-  display: none;
-}
-
-.visible {
-  display: inline;
-}
-
 .cover {
   position: inherit;
   width: 100%;
@@ -175,4 +146,55 @@ body {
   padding: 15px 15px;
   margin: 2px 2px 2px 2px;
   border: solid 1px black
+}
+
+.msgContainer {
+  background-color: rgb(143, 134, 134);
+  margin: 70px 0 0;
+}
+
+.RContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: row wrap;
+}
+
+.lbContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: row wrap;
+}
+
+.Rbtn {
+  width: 25%;
+  height: 4vh;
+  align-self: center;
+}
+
+.Wpara {
+  width: 75%;
+  font-size: medium;
+  justify-self: flex-start;
+}
+
+.lbBtn {
+  width: 25%;
+  height: 4vh;
+  align-self: center;
+}
+
+.score {
+  width: 75%;
+  font-size: medium;
+  justify-self: flex-start;
+}
+
+.hidden {
+  display: none;
+}
+
+.visible {
+  display: inline;
 }

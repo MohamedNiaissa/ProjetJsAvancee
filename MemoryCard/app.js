@@ -20,30 +20,64 @@ class GameResetOption {
 
     #elementsCreated; #getGameBoard; #msgContainer; #resetBtn; #winPara; #fetchWinPara; #fetchResetBtn;
 
+    #resetContainer; #lbContainer; #lbBtn; #askScore; #askUsername; #fetchLbBtn; #fetchAskScore; #fetchAskUsername;
+
     constructor() {
         this.#elementsCreated = false;
-        this.#getGameBoard = document.getElementById("game");
-        this.#msgContainer = document.createElement("div");
-        this.#resetBtn = document.createElement("button");
-        this.#winPara = document.createElement("p");
         this.#fetchWinPara = null;
         this.#fetchResetBtn = null;
+        this.#fetchLbBtn = null;
+        this.#fetchAskScore = null;
+        this.#fetchAskUsername = null;
+
+        this.#getGameBoard = document.getElementById("game");
+        this.#msgContainer = document.createElement("div");
+        this.#resetContainer = document.createElement("div");
+        this.#lbContainer = document.createElement("div");
+
+        this.#resetBtn = document.createElement("button");
+        this.#winPara = document.createElement("p");
+
+        this.#lbBtn = document.createElement("button");
+        this.#askScore = document.createElement("p");
+        this.#askUsername = document.createElement("input");
     }
 
     setUp() {
         if(this.#elementsCreated !== false) return;
 
         this.#msgContainer.setAttribute("class", "msgContainer");
+
+        this.#resetContainer.setAttribute("class", "RContainer");
+        this.#lbContainer.setAttribute("class", "lbContainer");
+
         this.#resetBtn.setAttribute("class", "Rbtn hidden");
-        this.#winPara.setAttribute("class", "Wpara hidden")
+        this.#winPara.setAttribute("class", "Wpara hidden");
         this.#resetBtn.innerHTML = "Restart";
 
-        this.#msgContainer.appendChild(this.#winPara);
-        this.#msgContainer.appendChild(this.#resetBtn);
+        this.#lbBtn.setAttribute("class", "lbBtn hidden");
+        this.#askScore.setAttribute("class", "score hidden");
+        this.#askUsername.setAttribute("class", "username hidden");
+        this.#lbBtn.innerHTML = "Leaderboard";
+        this.#askScore.innerHTML = "Please enter your username below, otherwise it will be defined as \"Unknown\" when starting a new game."
+
+        this.#resetContainer.appendChild(this.#winPara);
+        this.#resetContainer.appendChild(this.#resetBtn);
+
+        this.#lbContainer.appendChild(this.#askScore);
+        this.#lbContainer.appendChild(this.#lbBtn);
+        this.#lbContainer.appendChild(this.#askUsername)
+
+        this.#msgContainer.appendChild(this.#resetContainer);
+        this.#msgContainer.appendChild(this.#lbContainer);
+
         this.#getGameBoard.appendChild(this.#msgContainer);
 
         this.#fetchWinPara = this.#winPara;
         this.#fetchResetBtn = this.#resetBtn;
+        this.#fetchLbBtn = this.#lbBtn;
+        this.#fetchAskScore = this.#askScore;
+        this.#fetchAskUsername = this.#askUsername;
         this.#elementsCreated = true;
     }
 
@@ -51,12 +85,18 @@ class GameResetOption {
         this.#msgContainer.setAttribute("style", "box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.219)");
         this.#fetchWinPara.classList.replace("hidden", "visible");
         this.#fetchResetBtn.classList.replace("hidden", "visible");
+        this.#fetchLbBtn.classList.replace("hidden", "visible");
+        this.#fetchAskScore.classList.replace("hidden", "visible");
+        this.#fetchAskUsername.classList.replace("hidden", "visible");
     }
 
     hide() {
         this.#msgContainer.removeAttribute("style");
         this.#fetchWinPara.classList.replace("visible", "hidden");
         this.#fetchResetBtn.classList.replace("visible", "hidden");
+        this.#fetchLbBtn.classList.replace("visible", "hidden");
+        this.#fetchAskScore.classList.replace("visible", "hidden");
+        this.#fetchAskUsername.classList.replace("visible", "hidden");
     }
 
     fetchRBtn() {
@@ -65,6 +105,14 @@ class GameResetOption {
 
     fetchWinPara() {
         return this.#fetchWinPara;
+    }
+
+    fetchLbBtn() {
+        return this.#fetchLbBtn;
+    }
+
+    fetchUsername() {
+        return this.#fetchAskUsername;
     }
 }
 
@@ -201,15 +249,31 @@ class GameCore {
                     `If you want to start a new game, please click on the reset button.`
                 )
                 GameReset.display();
-                GameLB.addScore(time);
-                GameLB.orderScore();
                 GameTime.reset();
 
                 GameReset.fetchRBtn().addEventListener("click", function() {
                     
                     thisClass.#cardsSwitch.forEach(card => { card.classList.remove("active"); })
+
+                    if(GameLB.fetchVarScore() === false) {
+                        GameLB.addScore(time, "Unknown");
+                        GameLB.orderScore();
+                    }
+                    
                     GameReset.hide();
+                    GameLB.toggleScoreWasAdded(false);
                     StartGameBoard(null);
+                })
+
+                GameReset.fetchLbBtn().addEventListener("click", function() {
+                    GameLB.addScore(time, GameLB.fetchUsername());
+                    GameLB.orderScore();
+                    GameLB.toggleScoreWasAdded(true);
+                }, {once : true})
+
+                GameReset.fetchUsername().addEventListener("keyup", (e) => {
+                    console.log(e.target.value)
+                    GameLB.setUsername(e.target.value);
                 })
             }, 1000);
         }
@@ -265,19 +329,21 @@ class GameTimer {
 }
 
 class GameLeaderboard {
-    #getScoreContainer;
+    #getScoreContainer; #isScoreAdded; #getUsername;
 
     constructor() {
         this.#getScoreContainer = document.querySelector(".lbScore");
+        this.#isScoreAdded = false;
+        this.#getUsername = null;
     }
 
-    addScore(time) {
+    addScore(time, name) {
         const newScoreCell = document.createElement("div");
         const score = document.createElement("p");
 
         newScoreCell.setAttribute("class", "cell");
         newScoreCell.accessKey = time;
-        score.innerHTML = "Unknown : " + time + " seconds.";
+        score.innerHTML = `${name} : ${time} seconds.`;
 
         newScoreCell.appendChild(score);
         this.#getScoreContainer.appendChild(newScoreCell);
@@ -311,6 +377,24 @@ class GameLeaderboard {
         test.forEach(el => {
             self.#getScoreContainer.appendChild(el);
         })
+    }
+
+    toggleScoreWasAdded(boolean) {
+        boolean ? this.#isScoreAdded = true : this.#isScoreAdded = false;
+        this.#getUsername = null;
+    }
+
+    fetchVarScore() {
+        return this.#isScoreAdded;
+    }
+
+    setUsername(username) {
+        this.#getUsername = username;
+        console.log(this.#getUsername)
+    }
+
+    fetchUsername() {
+        return this.#getUsername;
     }
 }
 
