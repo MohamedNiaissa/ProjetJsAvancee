@@ -22,7 +22,7 @@ class GameResetOption {
 
     constructor() {
         this.#elementsCreated = false;
-        this.#getGameBoard = document.getElementById("gameBoard");
+        this.#getGameBoard = document.getElementById("game");
         this.#msgContainer = document.createElement("div");
         this.#resetBtn = document.createElement("button");
         this.#winPara = document.createElement("p");
@@ -41,9 +41,6 @@ class GameResetOption {
         this.#msgContainer.appendChild(this.#winPara);
         this.#msgContainer.appendChild(this.#resetBtn);
         this.#getGameBoard.appendChild(this.#msgContainer);
-        // this.#getGameBoard.insertBefore(this.#msgContainer, this.#getGameBoard.childNodes[2])
-        // document.body.appendChild(this.#msgContainer);
-
 
         this.#fetchWinPara = this.#winPara;
         this.#fetchResetBtn = this.#resetBtn;
@@ -51,13 +48,15 @@ class GameResetOption {
     }
 
     display() {
+        this.#msgContainer.setAttribute("style", "box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.219)");
         this.#fetchWinPara.classList.replace("hidden", "visible");
         this.#fetchResetBtn.classList.replace("hidden", "visible");
     }
 
     hide() {
+        this.#msgContainer.removeAttribute("style");
         this.#fetchWinPara.classList.replace("visible", "hidden");
-        this.#fetchResetBtn.classList.replace("visible", "hidden")
+        this.#fetchResetBtn.classList.replace("visible", "hidden");
     }
 
     fetchRBtn() {
