@@ -206,6 +206,7 @@ h1{
   display: flex;
   justify-content: center;
   flex-flow: column;
+  box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.219);
 }
 
 .RContainer {

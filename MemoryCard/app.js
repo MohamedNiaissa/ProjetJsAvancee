@@ -18,118 +18,67 @@ class GameResetOption {
      *@property {HTMLButtonElement} fetchResetBtn => Used to store the button so we can do things with it later on.
      */
 
-    #elementsCreated; #getGameBoard; #msgContainer; #resetBtn; #winPara; #fetchWinPara; #fetchResetBtn;
-    #resetContainer; #lbContainer; #lbBtn; #askScore; #askUsername; #fetchLbBtn; #fetchAskScore; #fetchAskUsername;
-    #winMsg; #fetchWinMsg;
+    #gameBoard; #menu; #congratsMsg; #userDiv; #userMsg; #username; #submitBtn; #actionDiv; #nextActionMsg; #resetBtn; #elementsCreated;    
 
     constructor() {
+        this.#gameBoard     = document.getElementById("game");
+        this.#menu          = document.createElement("div");
+        this.#congratsMsg   = document.createElement("p");
+        this.#userDiv       = document.createElement("div");
+        this.#userMsg       = document.createElement("p");
+        this.#username      = document.createElement("input");    
+        this.#submitBtn     = document.createElement("button");
+        this.#actionDiv     = document.createElement("div");
+        this.#nextActionMsg = document.createElement("p");
+        this.#resetBtn      = document.createElement("button");
+
         this.#elementsCreated = false;
-        this.#fetchWinPara = null;
-        this.#fetchResetBtn = null;
-        this.#fetchLbBtn = null;
-        this.#fetchAskScore = null;
-        this.#fetchAskUsername = null;
-
-
-        this.#fetchWinMsg;
-        this.#winMsg = document.createElement("p");
-
-
-        this.#getGameBoard = document.getElementById("game");
-        this.#msgContainer = document.createElement("div");
-        this.#resetContainer = document.createElement("div");
-        this.#lbContainer = document.createElement("div");
-
-        this.#resetBtn = document.createElement("button");
-        this.#winPara = document.createElement("p");
-
-        this.#lbBtn = document.createElement("button");
-        this.#askScore = document.createElement("p");
-        this.#askUsername = document.createElement("input");
     }
 
     setUp() {
         if(this.#elementsCreated !== false) return;
 
-        this.#winMsg.setAttribute("class", "winMsg hidden");
-        this.#winPara.setAttribute("class", "Wpara");
+        let count = 0;
+        const elements = [this.#menu,this.#congratsMsg,this.#userDiv,this.#userMsg,this.#username,this.#submitBtn,this.#actionDiv,this.#nextActionMsg,this.#resetBtn];
+        const elClasses = ["msgContainer pseudo-hidden","winMsg pseudo-hidden","lbContainer pseudo-hidden","score","username","lbBtn","RContainer pseudo-hidden","Wpara","Rbtn"];
 
+        var documentFragment = document.createDocumentFragment();
+        documentFragment.appendChild(this.#menu);
 
-        this.#msgContainer.setAttribute("class", "msgContainer pseudo-hidden");
-
-        this.#resetContainer.setAttribute("class", "RContainer pseudo-hidden");
-        this.#lbContainer.setAttribute("class", "lbContainer pseudo-hidden");
-
-        this.#resetBtn.setAttribute("class", "Rbtn");
+        this.#menu.append(this.#congratsMsg, this.#userDiv, this.#actionDiv);
+        this.#userDiv.append(this.#userMsg, this.#username, this.#submitBtn);
+        this.#actionDiv.append(this.#nextActionMsg, this.#resetBtn);
+        this.#userMsg.innerHTML = "Please enter your username : ";
+        this.#submitBtn.innerHTML = "Submit";
+        this.#nextActionMsg.innerHTML = "Would you like to restart ? ";
         this.#resetBtn.innerHTML = "Restart";
 
-        this.#lbBtn.setAttribute("class", "lbBtn");
-        this.#askScore.setAttribute("class", "score");
-        this.#askUsername.setAttribute("class", "username");
-        this.#lbBtn.innerHTML = "Submit";
-        this.#askScore.innerHTML = "Please enter your username : ";
-        this.#winPara.innerHTML = "Would you like to restart ? "
+        elements.forEach(el => { el.setAttribute("class", elClasses[count++]); })
 
-        this.#resetContainer.appendChild(this.#winPara);
-        this.#resetContainer.appendChild(this.#resetBtn);
-
-        this.#lbContainer.appendChild(this.#askScore);
-        this.#lbContainer.appendChild(this.#askUsername);
-        this.#lbContainer.appendChild(this.#lbBtn);
-
-        this.#msgContainer.appendChild(this.#winMsg);
-        this.#msgContainer.appendChild(this.#lbContainer);
-        this.#msgContainer.appendChild(this.#resetContainer);
-
-        this.#getGameBoard.appendChild(this.#msgContainer);
-
-        this.#fetchWinPara = this.#winPara;
-        this.#fetchResetBtn = this.#resetBtn;
-        this.#fetchLbBtn = this.#lbBtn;
-        this.#fetchAskScore = this.#askScore;
-        this.#fetchAskUsername = this.#askUsername;
+        this.#gameBoard.appendChild(documentFragment);
         this.#elementsCreated = true;
-        this.#fetchWinMsg = this.#winMsg;
     }
 
-    display() {
-        this.#msgContainer.setAttribute("style", "box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.219)");
-        this.#msgContainer.classList.replace("pseudo-hidden", "pseudo-visible");
-        this.#resetContainer.classList.replace("pseudo-hidden", "pseudo-visible");
-        this.#lbContainer.classList.replace("pseudo-hidden", "pseudo-visible");
-        this.#fetchWinMsg.classList.replace("hidden", "visible");
+    display(prop) {
+        let addClass, removeClass;
+        prop === "visible" ? (addClass = "pseudo-visible", removeClass = "pseudo-hidden" ) 
+                           : (addClass = "pseudo-hidden", removeClass = "pseudo-visible");
+
+        this.#menu.classList.replace(removeClass, addClass);
+        this.#actionDiv.classList.replace(removeClass, addClass);
+        this.#userDiv.classList.replace(removeClass, addClass);
+        this.#congratsMsg.classList.replace(removeClass, addClass);
     }
 
-    hide() {
-        this.#msgContainer.removeAttribute("style");
-        this.#msgContainer.classList.replace("pseudo-visible", "pseudo-hidden");
-        this.#resetContainer.classList.replace("pseudo-visible", "pseudo-hidden");
-        this.#lbContainer.classList.replace("pseudo-visible", "pseudo-hidden");
-        this.#fetchWinMsg.classList.replace("visible", "hidden");
-    }
+    fetchElement() {
+        const elements = {
+            "congratsMsg": this.#congratsMsg, 
+            "username": this.#username, 
+            "submitBtn": this.#submitBtn, 
+            "resetBtn": this.#resetBtn
+        }
 
-    fetchRBtn() {
-        return this.#fetchResetBtn;
-    }
-
-    fetchWinPara() {
-        return this.#fetchWinPara;
-    }
-
-    fetchLbBtn() {
-        return this.#fetchLbBtn;
-    }
-
-    fetchUsername() {
-        return this.#fetchAskUsername;
-    }
-
-    fetchWinMsg() {
-        return this.#winMsg;
-    }
-
-    fetchScore() {
-        return this.#fetchAskScore;
+        return elements;
     }
 }
 
@@ -266,15 +215,27 @@ class GameCore {
         if([...thisClass.#cardsSwitch].every(div => {return div.classList.contains("active")})) {
 
             const time = GameTime.fetchTime();
+            const elements = GameReset.fetchElement();
 
             setTimeout(function() {
 
-
-                GameReset.fetchWinMsg().innerHTML = `Congratulation, you finished the Memory Card Game ${time} in seconds ! <br/>`;
-                GameReset.display();
+                elements.congratsMsg.innerHTML = `Congratulation, you finished the Memory Card Game ${time} in seconds ! <br/><br/>`;
+                GameReset.display("visible");
                 GameTime.reset();
 
-                GameReset.fetchRBtn().addEventListener("click", function() {
+                elements.username.addEventListener("keyup", (e) => {
+                    console.log(e.target.value)
+                    GameLB.setUsername(e.target.value);
+                })
+
+                elements.submitBtn.addEventListener("click", function() {
+                    GameLB.addScore(time, GameLB.fetchUsername());
+                    requestAnimationFrame(() => { GameLB.fetchNewDiv().classList.add("animatepls");})
+                    GameLB.orderScore();
+                    GameLB.toggleScoreWasAdded(true);
+                }, {once : true})
+
+                elements.resetBtn.addEventListener("click", function() {
                     
                     thisClass.#cardsSwitch.forEach(card => { card.classList.remove("active"); })
 
@@ -283,22 +244,10 @@ class GameCore {
                         GameLB.orderScore();
                     }
                     
-                    GameReset.hide();
+                    GameReset.display("hidden");
                     GameLB.toggleScoreWasAdded(false);
                     StartGameBoard(null);
-                })
-
-                GameReset.fetchLbBtn().addEventListener("click", function() {
-                    GameLB.addScore(time, GameLB.fetchUsername());
-                    requestAnimationFrame(() => { GameLB.fetchNewDiv().classList.add("animatepls");})
-                    GameLB.orderScore();
-                    GameLB.toggleScoreWasAdded(true);
                 }, {once : true})
-
-                GameReset.fetchUsername().addEventListener("keyup", (e) => {
-                    console.log(e.target.value)
-                    GameLB.setUsername(e.target.value);
-                })
             }, 1000);
         }
     }
@@ -446,3 +395,5 @@ const GameGameplay = new GameCore();
 const GameTime = new GameTimer();
 const GameLB = new GameLeaderboard();
 StartGameBoard("launch");
+
+console.log(GameReset.fetchElement())
