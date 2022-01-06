@@ -1,3 +1,8 @@
+
+    async function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
 class GridPatern {
 
     constructor() {
@@ -16,6 +21,43 @@ class GridPatern {
     }
 
 
+  
+
+
+    static initGame(){
+        const initGrid = new GridPatern();
+        initGrid.createGrid();
+        initGrid.handlePlayerPatern();
+        initGrid.getPosition();
+
+        let bullet = initGrid.compareBulletToEnnemies();
+        // initGrid.compareBothPositions(initGrid.compareBulletToEnnemies(),initGrid.compareBulletToEnnemies2())
+        //console.log("bullet = " + bullet)
+        
+        this.looseLine(initGrid)
+            
+      
+        
+     
+    
+    }
+
+    static looseLine(initGrid) {
+        // let k = 0; 
+        async function loop() {
+         await sleep(100);
+         initGrid.handleMovementPatern();
+         if(initGrid.gameOver) {
+             window.alert("Game over !\n");
+             
+             return 0;
+         }
+         loop();
+     } 
+     
+     loop();
+     
+ }
     patern = [1,2,3,4,5,8,9,10,11,12,16,18];
     clonePaternEnnemiesShip = [1,2,3,4,5,8,9,10,11,12,16,18];
 
@@ -327,32 +369,22 @@ class GridPatern {
 
 }
 
-const initGrid = new GridPatern();
-initGrid.createGrid();
-initGrid.handlePlayerPatern();
-initGrid.getPosition();
+let game = true;
+
+GridPatern.initGame()
+    // const initGrid = new GridPatern();
+    // initGrid.createGrid();
+    // initGrid.handlePlayerPatern();
+    // initGrid.getPosition();
+    
+    
+    
+    // // let bullet = initGrid.compareBulletToEnnemies();
+    // // initGrid.compareBothPositions(initGrid.compareBulletToEnnemies(),initGrid.compareBulletToEnnemies2())
+    // // initGrid.compareBulletToEnnemies2();
+    // // console.log("bullet = " + bullet)
+    
+   
 
 
 
-// let bullet = initGrid.compareBulletToEnnemies();
-// initGrid.compareBothPositions(initGrid.compareBulletToEnnemies(),initGrid.compareBulletToEnnemies2())
-// initGrid.compareBulletToEnnemies2();
-// console.log("bullet = " + bullet)
-
-
-async function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-let k = 0; 
-async function loop() {
-    await sleep(1300);
-    initGrid.handleMovementPatern();
-    if(initGrid.gameOver) {
-        window.alert("Game over !\n");
-        return 0;
-    }
-    loop();
-} 
-
-loop();
