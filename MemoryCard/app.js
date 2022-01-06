@@ -93,34 +93,38 @@ class GameShuffleProcess {
      */
 
     #cardsContent;
-    // #fruitsProperties = [
-    //     { name: "banana",  icon : "./ressources/banana.svg",  }, 
-    //     { name: "apple",   icon : "./ressources/apple.svg",   }, 
-    //     { name: "brocoli", icon : "./ressources/brocoli.svg", }, 
-    //     { name: "cherry",  icon : "./ressources/cherry.svg",  }, 
-    //     { name: "pepper",  icon : "./ressources/pepper.svg",  }, 
-    //     { name: "straw",   icon : "./ressources/straw.svg",   },
-    // ]
-
     #fruitsProperties = [
-        { name: "lotus",     icon : "./ressources/lotus.png",  },
-        { name: "rose",      icon : "./ressources/rose.png",   },
-        { name: "cactus",    icon : "./ressources/cactus.png", },
-        { name: "cherry",    icon : "./ressources/cherryflower.png",  },
-        { name: "sunflower", icon : "./ressources/sunflower.png",  },
-        { name: "lavender",  icon : "./ressources/lavender.png",   },
+        { name: "banana",  icon : "./ressources/banana.svg",  }, 
+        { name: "apple",   icon : "./ressources/apple.svg",   }, 
+        { name: "brocoli", icon : "./ressources/brocoli.svg", }, 
+        { name: "cherry",  icon : "./ressources/cherry.svg",  }, 
+        { name: "pepper",  icon : "./ressources/pepper.svg",  }, 
+        { name: "straw",   icon : "./ressources/straw.svg",   },
+    ]
+
+    #plantsProperties = [
+        { name: "lotus",         icon : "./ressources/lotus.png",         },
+        { name: "rose",          icon : "./ressources/rose.png",          },
+        { name: "cactus",        icon : "./ressources/cactus.png",        },
+        { name: "cherryBlossom", icon : "./ressources/cherryflower.png",  },
+        { name: "sunflower",     icon : "./ressources/sunflower.png",     },
+        { name: "lavender",      icon : "./ressources/lavender.png",      },
     ]
 
     constructor() {
         this.#cardsContent;
         this.#fruitsProperties;
+        this.#plantsProperties;
     }
 
     setUp() {
+        const index = (Math.random()>0.5)? 1 : 0;
+        const theme = [this.#plantsProperties, this.#fruitsProperties][index];
         this.#cardsContent = [];
-        this.#fruitsProperties.forEach(fruit => {
+
+        theme.forEach(el => {
             for(let dbl = 0; dbl < 2; dbl++) {
-                this.#cardsContent.push(new this.#Card(fruit.name, fruit.icon));
+                this.#cardsContent.push(new this.#Card(el.name, el.icon));
             }
         });
 
@@ -395,5 +399,3 @@ const GameGameplay = new GameCore();
 const GameTime = new GameTimer();
 const GameLB = new GameLeaderboard();
 StartGameBoard("launch");
-
-console.log(GameReset.fetchElement())
