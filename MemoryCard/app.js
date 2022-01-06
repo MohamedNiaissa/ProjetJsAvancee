@@ -13,44 +13,59 @@ class GameResetOption {
      * We also added a way to get the HTMLButtonElement outside of the class.
      * 
      *@property {boolean} elementsCreated => Define when the div and the button are added to the HTML.
-     *@property {HTMLDivElement} btnContainer => Create a div that will contain a button.
+     *@property {HTMLDivElement} msgContainer => Create a div that will contain a a paragraph and a button.
      *@property {HTMLButtonElement} resetBtn => Create a button with the purpose of resetting the game board.
      *@property {HTMLButtonElement} fetchResetBtn => Used to store the button so we can do things with it later on.
      */
 
-    #elementsCreated; #btnContainer; #resetBtn; #fetchResetBtn;
+    #elementsCreated; #getGameBoard; #msgContainer; #resetBtn; #winPara; #fetchWinPara; #fetchResetBtn;
 
     constructor() {
         this.#elementsCreated = false;
-        this.#btnContainer = document.createElement("div");
+        this.#getGameBoard = document.getElementById("gameBoard");
+        this.#msgContainer = document.createElement("div");
         this.#resetBtn = document.createElement("button");
-        this.#fetchResetBtn = this.#resetBtn;
+        this.#winPara = document.createElement("p");
+        this.#fetchWinPara = null;
+        this.#fetchResetBtn = null;
     }
 
     setUp() {
         if(this.#elementsCreated !== false) return;
 
-        this.#btnContainer.setAttribute("class", "btnContainer");
-        this.#resetBtn.setAttribute("class", "design hidden");
+        this.#msgContainer.setAttribute("class", "msgContainer");
+        this.#resetBtn.setAttribute("class", "Rbtn hidden");
+        this.#winPara.setAttribute("class", "Wpara hidden")
         this.#resetBtn.innerHTML = "Restart";
 
-        this.#btnContainer.appendChild(this.#resetBtn);
-        document.body.insertBefore(this.#btnContainer, document.body.childNodes[2]);
+        this.#msgContainer.appendChild(this.#winPara);
+        this.#msgContainer.appendChild(this.#resetBtn);
+        this.#getGameBoard.appendChild(this.#msgContainer);
+        // this.#getGameBoard.insertBefore(this.#msgContainer, this.#getGameBoard.childNodes[2])
+        // document.body.appendChild(this.#msgContainer);
 
+
+        this.#fetchWinPara = this.#winPara;
         this.#fetchResetBtn = this.#resetBtn;
         this.#elementsCreated = true;
     }
 
     display() {
+        this.#fetchWinPara.classList.replace("hidden", "visible");
         this.#fetchResetBtn.classList.replace("hidden", "visible");
     }
 
     hide() {
+        this.#fetchWinPara.classList.replace("visible", "hidden");
         this.#fetchResetBtn.classList.replace("visible", "hidden")
     }
 
     fetchRBtn() {
         return this.#fetchResetBtn;
+    }
+
+    fetchWinPara() {
+        return this.#fetchWinPara;
     }
 }
 
@@ -179,7 +194,10 @@ class GameCore {
 
             setTimeout(function() {
 
-                window.alert(`You won after ${GameTime.fetchTime()} seconds`);
+                GameReset.fetchWinPara().innerHTML = (
+                    `Congratulation, you finished the CardGame in ${GameTime.fetchTime()} seconds ! <br/>` +
+                    `If you want to start a new game, please click on the reset button.`
+                )
                 GameReset.display();
                 GameTime.reset();
 
@@ -234,6 +252,7 @@ class GameTimer {
     reset() {
         this.#isStopped = true;
         this.#timerProcess = null;
+        this.#dateOrigin = null;
     }
 
     fetchTime() {
