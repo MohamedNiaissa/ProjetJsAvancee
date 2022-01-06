@@ -5,12 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="style.css">
+<style>
+ h4{
+    text-align: center;
+}
+
+.divbtn{
+    display: flex;
+    justify-content: space-around;
+}
+
+.fin{
+  display: none;
+}
+</style>
+ 
 </head>
 <body>
   <div class="contenu">
     <h3 id ="score">Score :</h3>
     <div class="grille"></div>
   
+  </div>
+
+  <div class="fin">
+    <h4>Do you want to start a new game ?</h4>
+    
+    <div class="divbtn">
+        <button id="button1">yes</button>
+        <button id="button2">no</button>
+    </div>
   </div>
  
   <script src="app.js"></script>

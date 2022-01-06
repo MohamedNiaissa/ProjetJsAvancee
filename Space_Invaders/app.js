@@ -47,6 +47,7 @@ class GridPatern {
  
     looseLine(initGrid) {
         // let k = 0; 
+        let boolFin = true;
         async function loop() {
          await sleep(100);
          initGrid.handleMovementPatern();
@@ -54,27 +55,18 @@ class GridPatern {
             window.alert("Game over !\n");
             let contenu = document.querySelector('.contenu')
             contenu.remove()
-            let txtPlayAgain = document.createElement('h4');
-            txtPlayAgain.innerHTML = "Do you want to start a new game ?";
-            txtPlayAgain.style.textAlign = "center"
-            document.body.appendChild(txtPlayAgain) 
-            let divbtn = document.createElement('div');
-            document.body.appendChild(divbtn);
-            let button1 = document.createElement('button')
-            let button2 = document.createElement('button');
-            button1.innerHTML = "yes"
-            button2.innerHTML = "no"
-            divbtn.appendChild(button1)
-            divbtn.appendChild(button2)
-            divbtn.setAttribute('style',"display:flex; justify-content:space-around;")
-            button2.addEventListener('click',function(){alert('See ya'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
+            let fin = document.querySelector('.fin')
+            fin.style.display = "inline"
+             
+            let btn1 = document.querySelector('#button1') 
+            let btn2 = document.querySelector('#button2') 
+            btn1.addEventListener('click',function(){boolFin = false; window.open("/Projet/Space_Invaders/index.html","_self")})
+            btn2.addEventListener('click',function(){alert('See ya'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
+
          }
-         
-         loop();
+            loop();
      } 
-     
-     loop();
-     
+        loop(); 
  }
 
     
