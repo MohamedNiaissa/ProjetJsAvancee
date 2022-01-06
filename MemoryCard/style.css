@@ -124,22 +124,55 @@ body {
 
 .leaderboard {
   display: flex;
-  flex-flow: column wrap;
-  align-content: center;
+  flex-wrap: wrap;
   align-self: flex-start;
-  box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.219);
-  margin-left: 250px;
-  margin-top: 45px;
+  margin: 45px 0 0 250px;
   width: 300px;
   height: 600px;
-  background-color: rgb(143, 134, 134);
+  box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.219);
 }
 
 .lbTitle {
+  background-color: rgb(112, 112, 112);
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: solid 2px black;
+  border: 3px solid black;
+  border-bottom: 0px;
   height: 40px;
+}
+
+.lbScore {
+  background-color: rgb(163, 163, 163);
+  width: 100%;
+  border: 3px solid black;
+  height: 560px;
+  overflow-y: scroll;
+}
+
+.scrollBar::-webkit-scrollbar {
+  width: 10px;
+  background-color: #6b6767;
+}
+
+.scrollBar::-webkit-scrollbar-track {
+  background: #464444;
+}
+
+.scrollBar::-webkit-scrollbar-thumb {
+  background: rgb(207, 207, 207);
+}
+
+.cell {
+  width: 100%;
+  height: 50;
+}
+
+.cell > p {
+  background-color: rgb(145, 140, 140);
+  width: 98%;
+  padding: 15px 15px;
+  margin: 2px 2px 2px 2px;
+  border: solid 1px black
 }
