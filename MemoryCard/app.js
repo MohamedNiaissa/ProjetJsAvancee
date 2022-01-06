@@ -191,13 +191,18 @@ class GameCore {
 
         if([...thisClass.#cardsSwitch].every(div => {return div.classList.contains("active")})) {
 
+            const time = GameTime.fetchTime();
+
             setTimeout(function() {
 
+
                 GameReset.fetchWinPara().innerHTML = (
-                    `Congratulation, you finished the CardGame in ${GameTime.fetchTime()} seconds ! <br/>` +
+                    `Congratulation, you finished the CardGame in ${time} seconds ! <br/>` +
                     `If you want to start a new game, please click on the reset button.`
                 )
                 GameReset.display();
+                GameLB.addScore(time);
+                GameLB.orderScore();
                 GameTime.reset();
 
                 GameReset.fetchRBtn().addEventListener("click", function() {
@@ -259,6 +264,56 @@ class GameTimer {
     }
 }
 
+class GameLeaderboard {
+    #getScoreContainer;
+
+    constructor() {
+        this.#getScoreContainer = document.querySelector(".lbScore");
+    }
+
+    addScore(time) {
+        const newScoreCell = document.createElement("div");
+        const score = document.createElement("p");
+
+        newScoreCell.setAttribute("class", "cell");
+        newScoreCell.accessKey = time;
+        score.innerHTML = "Unknown : " + time + " seconds.";
+
+        newScoreCell.appendChild(score);
+        this.#getScoreContainer.appendChild(newScoreCell);
+    }
+
+    orderScore() {  
+        const allCells = this.#getScoreContainer.children;
+        const self = this;
+        let clone = Array.from(allCells);
+        let test = [];
+
+        for(let index = 0; index < allCells.length; index++) {
+            let smallesttime;
+            let counter = 0;
+
+            clone.forEach(el => {
+                counter === 0 ? smallesttime = parseInt(el.accessKey) : null;
+                (parseInt(el.accessKey) <= smallesttime) ? smallesttime = parseInt(el.accessKey) : null;
+                counter++;
+            })
+
+            for(let fetch = 0; fetch < allCells.length; fetch++) {
+                if(parseInt(allCells[fetch].accessKey) === smallesttime) {
+                    test.push(allCells[fetch]);
+                    clone = clone.filter(item => item !== allCells[fetch]);
+                    break;
+                }
+            }
+        }
+
+        test.forEach(el => {
+            self.#getScoreContainer.appendChild(el);
+        })
+    }
+}
+
 function StartGameBoard(state) {
     /**
      * The following function will set-up the whole game in differents but required aspect so an user can start playing.
@@ -275,4 +330,5 @@ const GameReset = new GameResetOption();
 const GameShuffle = new GameShuffleProcess();
 const GameGameplay = new GameCore();
 const GameTime = new GameTimer();
+const GameLB = new GameLeaderboard();
 StartGameBoard("launch");
