@@ -11,6 +11,8 @@ class GridPatern {
         this.listeposBullet = [];
         this.listeposEnnemyShip = [];
         this.boolEnnemies = false;
+        this.score = 0;
+        this.samePosition=false;
     }
 
 
@@ -89,22 +91,30 @@ class GridPatern {
         //console.log("position = " + positionSheep);
 
         if(positionSheep <= 62 && positionSheep >=56){
+            let max = 8;
 
-            for(var i = 0;i<8;i++){
+            for(var i = 0;i<max;i++){
+               
+               
+            
                 let divbullet = gridCase[position-7*i].appendChild(document.createElement('div'));
                 let valuePosBullet = this.getMooveShipEnnemy(position-7*i);
                 this.listeposBullet.push(valuePosBullet)
-
-               
+                
                 divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: green;');   
                 await sleep(700/7); // boucle parcouru 7 fois donc on divise par 7
                 divbullet.remove() 
+                console.log(this.samePosition)
+                this.samePosition = false
+            
             }
 
             
         }else if(positionSheep <=55 && positionSheep >= 49 ){
+            let max = 7;
 
-            for(var i = 0;i<7;i++){
+
+            for(var i = 0;i<max;i++){
 
                 let divbullet = gridCase[position-7*i].appendChild(document.createElement('div'));
                 let valuePosBullet = this.getMooveShipEnnemy(position-7*i);
@@ -115,8 +125,9 @@ class GridPatern {
             }
 
         }else if(positionSheep <= 48 && positionSheep >= 42){
+            let max = 6;
 
-            for(var i = 0;i<6;i++){
+            for(var i = 0;i<max;i++){
                 let divbullet = gridCase[position-7*i].appendChild(document.createElement('div'));
                 let valuePosBullet = this.getMooveShipEnnemy(position-7*i);
                 this.listeposBullet.push(valuePosBullet)
@@ -250,6 +261,18 @@ class GridPatern {
         return this.listeposBullet;
     }
 
+    winGame(){
+        if(this.clonePaternEnnemiesShip.length ==0){
+            alert('You win\nYour score is '+this.score)
+        }
+
+    }
+    
+
+    scorePlayer(){
+        let score = document.querySelector("#score");
+        score.innerHTML = "Score : " + this.score
+    }
    async  compareBulletToEnnemies(mooveShipEnnemie){
 
         const gridCase = document.querySelectorAll("#case");
@@ -278,12 +301,16 @@ class GridPatern {
                         console.log( "TOUCHÉE" )
                         console.log( "pos ennemies = " + tabPosEnnemies[i] )
                         console.log( "pos bullet = " + tabPosBullet[b] )
+                        this.samePosition = true;
                         sortBoucle = true;
                         gridCase[tabPosBullet[b]].style.background = 'red';
+                        this.samePosition = tabPosBullet[b]
                         this.clonePaternEnnemiesShip.splice(this.clonePaternEnnemiesShip.indexOf(tabPosBullet[b]-this.mov),1)
-
+                        this.score++
+                        this.scorePlayer();
+                        this.winGame()
                     
-                    } 
+                    } else{this.samePosition = false}
                  if(sortBoucle){break}
                 }
                 if(sortBoucle){break}
@@ -291,23 +318,12 @@ class GridPatern {
 
         }
          
-       
-
-
-
-        
-
         tabPosBullet.length =0;
-
-
-
                    
     }
 
 
-    compareBothPositions(pos1,pos2){
-       
-    }
+
 
 }
 
@@ -333,7 +349,7 @@ async function loop() {
     await sleep(1300);
     initGrid.handleMovementPatern();
     if(initGrid.gameOver) {
-        window.alert("Game over !");
+        window.alert("Game over !\n");
         return 0;
     }
     loop();
