@@ -19,8 +19,8 @@ class GameResetOption {
      */
 
     #elementsCreated; #getGameBoard; #msgContainer; #resetBtn; #winPara; #fetchWinPara; #fetchResetBtn;
-
     #resetContainer; #lbContainer; #lbBtn; #askScore; #askUsername; #fetchLbBtn; #fetchAskScore; #fetchAskUsername;
+    #winMsg; #fetchWinMsg;
 
     constructor() {
         this.#elementsCreated = false;
@@ -29,6 +29,11 @@ class GameResetOption {
         this.#fetchLbBtn = null;
         this.#fetchAskScore = null;
         this.#fetchAskUsername = null;
+
+
+        this.#fetchWinMsg;
+        this.#winMsg = document.createElement("p");
+
 
         this.#getGameBoard = document.getElementById("game");
         this.#msgContainer = document.createElement("div");
@@ -46,30 +51,35 @@ class GameResetOption {
     setUp() {
         if(this.#elementsCreated !== false) return;
 
-        this.#msgContainer.setAttribute("class", "msgContainer");
+        this.#winMsg.setAttribute("class", "winMsg hidden");
+        this.#winPara.setAttribute("class", "Wpara");
 
-        this.#resetContainer.setAttribute("class", "RContainer");
-        this.#lbContainer.setAttribute("class", "lbContainer");
 
-        this.#resetBtn.setAttribute("class", "Rbtn hidden");
-        this.#winPara.setAttribute("class", "Wpara hidden");
+        this.#msgContainer.setAttribute("class", "msgContainer pseudo-hidden");
+
+        this.#resetContainer.setAttribute("class", "RContainer pseudo-hidden");
+        this.#lbContainer.setAttribute("class", "lbContainer pseudo-hidden");
+
+        this.#resetBtn.setAttribute("class", "Rbtn");
         this.#resetBtn.innerHTML = "Restart";
 
-        this.#lbBtn.setAttribute("class", "lbBtn hidden");
-        this.#askScore.setAttribute("class", "score hidden");
-        this.#askUsername.setAttribute("class", "username hidden");
-        this.#lbBtn.innerHTML = "Leaderboard";
-        this.#askScore.innerHTML = "Please enter your username below, otherwise it will be defined as \"Unknown\" when starting a new game."
+        this.#lbBtn.setAttribute("class", "lbBtn");
+        this.#askScore.setAttribute("class", "score");
+        this.#askUsername.setAttribute("class", "username");
+        this.#lbBtn.innerHTML = "Submit";
+        this.#askScore.innerHTML = "Please enter your username : ";
+        this.#winPara.innerHTML = "Would you like to restart ? "
 
         this.#resetContainer.appendChild(this.#winPara);
         this.#resetContainer.appendChild(this.#resetBtn);
 
         this.#lbContainer.appendChild(this.#askScore);
+        this.#lbContainer.appendChild(this.#askUsername);
         this.#lbContainer.appendChild(this.#lbBtn);
-        this.#lbContainer.appendChild(this.#askUsername)
 
-        this.#msgContainer.appendChild(this.#resetContainer);
+        this.#msgContainer.appendChild(this.#winMsg);
         this.#msgContainer.appendChild(this.#lbContainer);
+        this.#msgContainer.appendChild(this.#resetContainer);
 
         this.#getGameBoard.appendChild(this.#msgContainer);
 
@@ -79,24 +89,23 @@ class GameResetOption {
         this.#fetchAskScore = this.#askScore;
         this.#fetchAskUsername = this.#askUsername;
         this.#elementsCreated = true;
+        this.#fetchWinMsg = this.#winMsg;
     }
 
     display() {
         this.#msgContainer.setAttribute("style", "box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.219)");
-        this.#fetchWinPara.classList.replace("hidden", "visible");
-        this.#fetchResetBtn.classList.replace("hidden", "visible");
-        this.#fetchLbBtn.classList.replace("hidden", "visible");
-        this.#fetchAskScore.classList.replace("hidden", "visible");
-        this.#fetchAskUsername.classList.replace("hidden", "visible");
+        this.#msgContainer.classList.replace("pseudo-hidden", "pseudo-visible");
+        this.#resetContainer.classList.replace("pseudo-hidden", "pseudo-visible");
+        this.#lbContainer.classList.replace("pseudo-hidden", "pseudo-visible");
+        this.#fetchWinMsg.classList.replace("hidden", "visible");
     }
 
     hide() {
         this.#msgContainer.removeAttribute("style");
-        this.#fetchWinPara.classList.replace("visible", "hidden");
-        this.#fetchResetBtn.classList.replace("visible", "hidden");
-        this.#fetchLbBtn.classList.replace("visible", "hidden");
-        this.#fetchAskScore.classList.replace("visible", "hidden");
-        this.#fetchAskUsername.classList.replace("visible", "hidden");
+        this.#msgContainer.classList.replace("pseudo-visible", "pseudo-hidden");
+        this.#resetContainer.classList.replace("pseudo-visible", "pseudo-hidden");
+        this.#lbContainer.classList.replace("pseudo-visible", "pseudo-hidden");
+        this.#fetchWinMsg.classList.replace("visible", "hidden");
     }
 
     fetchRBtn() {
@@ -113,6 +122,14 @@ class GameResetOption {
 
     fetchUsername() {
         return this.#fetchAskUsername;
+    }
+
+    fetchWinMsg() {
+        return this.#winMsg;
+    }
+
+    fetchScore() {
+        return this.#fetchAskScore;
     }
 }
 
@@ -253,10 +270,7 @@ class GameCore {
             setTimeout(function() {
 
 
-                GameReset.fetchWinPara().innerHTML = (
-                    `Congratulation, you finished the CardGame in ${time} seconds ! <br/>` +
-                    `If you want to start a new game, please click on the reset button.`
-                )
+                GameReset.fetchWinMsg().innerHTML = `Congratulation, you finished the Memory Card Game ${time} in seconds ! <br/>`;
                 GameReset.display();
                 GameTime.reset();
 

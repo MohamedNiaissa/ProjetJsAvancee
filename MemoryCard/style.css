@@ -200,50 +200,55 @@ h1{
 }
 
 .msgContainer {
-  background-color: rgb(143, 134, 134);
+  background-color: #c2c6db;
   margin: 70px 0 0;
   border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  flex-flow: column;
 }
 
 .RContainer {
   width: 100%;
+  padding: 15px 15px;
   display: flex;
   flex-flow: row wrap;
 }
 
 .lbContainer {
   width: 100%;
+  padding: 15px 15px;
   display: flex;
-  flex-flow: column wrap;
 }
 
 .Rbtn {
-  width: 25%;
-  height: 4vh;
+  width: 15%;
+  height: 3vh;
   align-self: center;
 }
 
 .Wpara {
-  width: 75%;
-  font-size: medium;
-  justify-self: flex-start;
+  font-size: large;
+  align-self: center;
+  margin-right: 10px;
 }
 
 .lbBtn {
-  width: 25%;
-  height: 4vh;
+  width: 15%;
+  height: 3vh;
   align-self: center;
-}
-
-.score {
-  width: 100%;
-  font-size: medium;
-  justify-self: center;
 }
 
 .username {
-  height: 4vh;
+  height: 3vh;
   align-self: center;
+  margin-right: 10px;
+}
+
+.score {
+  font-size: large;
+  align-self: center;
+  margin-right: 10px;
 }
 
 .hidden {
@@ -252,4 +257,19 @@ h1{
 
 .visible {
   display: inline;
+}
+
+.winMsg {
+  height: auto;
+  padding: 15px 0 0 0 ;
+  font-size: large;
+  align-self: center;
+}
+
+.pseudo-hidden {
+  visibility: hidden;
+}
+
+.pseudo-visible {
+  visibility: visible;
 }
