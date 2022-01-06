@@ -24,7 +24,7 @@ class GridPatern {
   
 
 
-    static initGame(){
+    initGame(){
         const initGrid = new GridPatern();
         initGrid.createGrid();
         initGrid.handlePlayerPatern();
@@ -35,32 +35,50 @@ class GridPatern {
         //console.log("bullet = " + bullet)
         
         this.looseLine(initGrid)
-            
-      
         
-     
-    
+        
     }
 
-    static looseLine(initGrid) {
+  
+    playAgain(){
+        this.initGame()
+    }
+    
+ 
+    looseLine(initGrid) {
         // let k = 0; 
         async function loop() {
          await sleep(100);
          initGrid.handleMovementPatern();
          if(initGrid.gameOver) {
-             window.alert("Game over !\n");
-             
-             return 0;
+            window.alert("Game over !\n");
+            let contenu = document.querySelector('.contenu')
+            contenu.remove()
+            let txtPlayAgain = document.createElement('h4');
+            txtPlayAgain.innerHTML = "Do you want to start a new game ?";
+            txtPlayAgain.style.textAlign = "center"
+            document.body.appendChild(txtPlayAgain) 
+            let divbtn = document.createElement('div');
+            document.body.appendChild(divbtn);
+            let button1 = document.createElement('button')
+            let button2 = document.createElement('button');
+            button1.innerHTML = "yes"
+            button2.innerHTML = "no"
+            divbtn.appendChild(button1)
+            divbtn.appendChild(button2)
+            divbtn.setAttribute('style',"display:flex; justify-content:space-around;")
+            button2.addEventListener('click',function(){alert('See ya');})
          }
+         
          loop();
      } 
      
      loop();
      
  }
-    patern = [1,2,3,4,5,8,9,10,11,12,16,18];
-    clonePaternEnnemiesShip = [1,2,3,4,5,8,9,10,11,12,16,18];
 
+    
+    pattern = [1,2,3,4,5,8,9,10,11,12,16,18];
 
     createGrid() {
         const container = document.querySelector('.grille');
@@ -228,7 +246,7 @@ class GridPatern {
         const gridCase = document.querySelectorAll("#case");
 
         
-        this.clonePaternEnnemiesShip.forEach(index => {
+        this.pattern.forEach(index => {
             let enemyShip = document.createElement('img');
             enemyShip.setAttribute("src", "./ressources/ennemies.png");
 
@@ -243,7 +261,7 @@ class GridPatern {
         const gridCase = document.querySelectorAll("#case");
 
         // console.log("-----------------")
-        this.clonePaternEnnemiesShip.forEach(index => {
+        this.pattern.forEach(index => {
             if(this.newRow) this.sideReached = null;
             else if([6,13,20,27,34,41,48,55].indexOf(index + this.mov) != -1) this.sideReached = "right";
             else if([0,7,14,21,28,35,42,49].indexOf(index + this.mov) != -1)  this.sideReached = "left";
@@ -253,7 +271,7 @@ class GridPatern {
         this.newRow = false;
         this.handleNextDirection();
 
-        this.clonePaternEnnemiesShip.forEach(index => {
+        this.pattern.forEach(index => {
             // console.log(index + this.mov)
             if(index + this.mov > 55) return this.gameOver = true;
         })
@@ -290,7 +308,7 @@ class GridPatern {
     getListPosShip(mooveShipEnnemie){
         this.listeposEnnemyShip.length = 0;
 
-        this.clonePaternEnnemiesShip.forEach(i => {
+        this.pattern.forEach(i => {
             if(!(i+mooveShipEnnemie === NaN)){this.listeposEnnemyShip.push(i+mooveShipEnnemie)}
 
         })
@@ -304,12 +322,13 @@ class GridPatern {
     }
 
     winGame(){
-        if(this.clonePaternEnnemiesShip.length ==0){
+        if(this.pattern.length ==0){
             alert('You win\nYour score is '+this.score)
         }
 
     }
-    
+
+   
 
     scorePlayer(){
         let score = document.querySelector("#score");
@@ -347,7 +366,7 @@ class GridPatern {
                         sortBoucle = true;
                         gridCase[tabPosBullet[b]].style.background = 'red';
                         this.samePosition = tabPosBullet[b]
-                        this.clonePaternEnnemiesShip.splice(this.clonePaternEnnemiesShip.indexOf(tabPosBullet[b]-this.mov),1)
+                        this.pattern.splice(this.pattern.indexOf(tabPosBullet[b]-this.mov),1)
                         this.score++
                         this.scorePlayer();
                         this.winGame()
@@ -370,9 +389,9 @@ class GridPatern {
 }
 
 let game = true;
-
-GridPatern.initGame()
-    // const initGrid = new GridPatern();
+let grid = new GridPatern();
+grid.initGame()
+   // const initGrid = new GridPatern();
     // initGrid.createGrid();
     // initGrid.handlePlayerPatern();
     // initGrid.getPosition();
