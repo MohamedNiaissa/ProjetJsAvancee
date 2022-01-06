@@ -67,7 +67,7 @@ class GridPatern {
             divbtn.appendChild(button1)
             divbtn.appendChild(button2)
             divbtn.setAttribute('style',"display:flex; justify-content:space-around;")
-            button2.addEventListener('click',function(){alert('See ya');})
+            button2.addEventListener('click',function(){alert('See ya'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
          }
          
          loop();
