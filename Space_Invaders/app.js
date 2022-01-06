@@ -15,6 +15,8 @@ class GridPatern {
 
 
     patern = [1,2,3,4,5,8,9,10,11,12,16,18];
+    clonePaternEnnemiesShip = [1,2,3,4,5,8,9,10,11,12,16,18];
+
 
     createGrid() {
         const container = document.querySelector('.grille');
@@ -89,7 +91,7 @@ class GridPatern {
 
             for(var i = 0;i<8;i++){
                 let divbullet = gridCase[position-7*i].appendChild(document.createElement('div'));
-                let valuePosBullet = this.compareBulletToEnnemies2(position-7*i);
+                let valuePosBullet = this.getMooveShipEnnemy(position-7*i);
                 this.listeposBullet.push(valuePosBullet)
 
                
@@ -104,7 +106,7 @@ class GridPatern {
             for(var i = 0;i<7;i++){
 
                 let divbullet = gridCase[position-7*i].appendChild(document.createElement('div'));
-                let valuePosBullet = this.compareBulletToEnnemies2(position-7*i);
+                let valuePosBullet = this.getMooveShipEnnemy(position-7*i);
                 this.listeposBullet.push(valuePosBullet)
                 divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: green;');   
                 await sleep(700/7);
@@ -115,7 +117,7 @@ class GridPatern {
 
             for(var i = 0;i<6;i++){
                 let divbullet = gridCase[position-7*i].appendChild(document.createElement('div'));
-                let valuePosBullet = this.compareBulletToEnnemies2(position-7*i);
+                let valuePosBullet = this.getMooveShipEnnemy(position-7*i);
                 this.listeposBullet.push(valuePosBullet)
                 divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: green;');   
                 await sleep(700/7);
@@ -177,7 +179,7 @@ class GridPatern {
         const gridCase = document.querySelectorAll("#case");
 
         
-        this.patern.forEach(index => {
+        this.clonePaternEnnemiesShip.forEach(index => {
             let enemyShip = document.createElement('img');
             enemyShip.setAttribute("src", "./ressources/ennemies.png");
 
@@ -235,19 +237,13 @@ class GridPatern {
 
     }
 
-    compareBulletToEnnemies2(mooveShipEnnemie){
-
-        // console.log("position bullet = "+(mooveShipEnnemie))
-
-        return mooveShipEnnemie;
-    
-
+    getMooveShipEnnemy(mooveShipEnnemie){
+        return mooveShipEnnemie;    
     }
 
     getListPosShip(mooveShipEnnemie){
         this.listeposEnnemyShip.length = 0;
 
-        
         this.patern.forEach(i => {
             // console.log("position ennemie = "+(i+mooveShipEnnemie))
             if(!(i+mooveShipEnnemie === NaN)){this.listeposEnnemyShip.push(i+mooveShipEnnemie)}
@@ -264,6 +260,8 @@ class GridPatern {
     }
 
    async  compareBulletToEnnemies(mooveShipEnnemie){
+
+        const gridCase = document.querySelectorAll("#case");
 
         let listeosShip = this.getListPosShip(mooveShipEnnemie);
         let positionBullet = this.getListPosBullet(); 
@@ -289,8 +287,9 @@ class GridPatern {
                         console.log( "TOUCHÉE" )
                         console.log( "pos ennemies = " + tabPosEnnemies[i] )
                         console.log( "pos bullet = " + tabPosBullet[b] )
-                        return tabPosBullet[i];
-                   }
+                        sortBoucle = true;
+                        gridCase[tabPosBullet[b]].style.background = 'red';
+                    }
                  if(sortBoucle){break}
                 }
                 if(sortBoucle){break}
