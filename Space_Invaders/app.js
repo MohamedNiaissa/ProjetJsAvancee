@@ -129,7 +129,6 @@ class GridPatern {
         await sleep(300)  // Compensation avec les precedents await pour obtenir 1 sec
         this.disableAttack = true;
 
-        // this.disableAttack = false;
  
     
     }
@@ -137,12 +136,8 @@ class GridPatern {
   
     playerAttack(positionShip){
 
-        let movBullet =  positionShip-7;
-            // console.log(positionShip)
-
-            // console.log('movBullet = ' + movBullet)
-           
-            this.moveBullet(movBullet)
+        let movBullet =  positionShip-7;  
+        this.moveBullet(movBullet)
     }
 
     getPosition(){
@@ -215,13 +210,11 @@ class GridPatern {
     handleNextDirection() {
         if(this.sideReached === null){ 
             this.clonemov++;
-            // console.log(this.mov)
             this.compareBulletToEnnemies(this.mov);
 
             return this.mov++;}
         if(this.sideReached === "right"){   
             this.boolEnnemies = "true"          
-            // console.log('r ' +this.mov)
             this.clonemov--;
             this.compareBulletToEnnemies(this.mov);
 
@@ -229,7 +222,6 @@ class GridPatern {
         if(this.sideReached === "left") {        
             this.boolEnnemies = "false"          
 
-            // console.log(this.mov)
             this.clonemov+=7;
             this.compareBulletToEnnemies(this.mov);
 
@@ -245,10 +237,8 @@ class GridPatern {
         this.listeposEnnemyShip.length = 0;
 
         this.patern.forEach(i => {
-            // console.log("position ennemie = "+(i+mooveShipEnnemie))
             if(!(i+mooveShipEnnemie === NaN)){this.listeposEnnemyShip.push(i+mooveShipEnnemie)}
 
-            // console.log("return positionBullet " + positionBullet)
         })
 
         return this.listeposEnnemyShip;
@@ -289,7 +279,8 @@ class GridPatern {
                         console.log( "pos bullet = " + tabPosBullet[b] )
                         sortBoucle = true;
                         gridCase[tabPosBullet[b]].style.background = 'red';
-                    }
+                    
+                    } 
                  if(sortBoucle){break}
                 }
                 if(sortBoucle){break}
