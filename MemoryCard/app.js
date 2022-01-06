@@ -128,12 +128,12 @@ class GameShuffleProcess {
 
     #cardsContent;
     #fruitsProperties = [
-        { name: "banana",  icon : "./ressources/banana.svg",  }, 
-        { name: "apple",   icon : "./ressources/apple.svg",   }, 
-        { name: "brocoli", icon : "./ressources/brocoli.svg", }, 
-        { name: "cherry",  icon : "./ressources/cherry.svg",  }, 
-        { name: "pepper",  icon : "./ressources/pepper.svg",  }, 
-        { name: "straw",   icon : "./ressources/straw.svg",   },
+        { name: "lotus",  icon : "./ressources/lotus.png",  },
+        { name: "rose",   icon : "./ressources/rose.png",   },
+        { name: "cactus", icon : "./ressources/cactus.png", },
+        { name: "cherry",  icon : "./ressources/cherryflower.png",  },
+        { name: "sunflower", icon : "./ressources/sunflower.png",  },
+        { name: "lavender",   icon : "./ressources/lavender.png",   },
     ]
 
     constructor() {
