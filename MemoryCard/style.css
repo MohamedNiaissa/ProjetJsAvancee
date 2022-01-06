@@ -117,3 +117,32 @@ body {
   justify-content: center;
   margin-bottom: 10px;
 }
+
+.gameBody {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: row wrap;
+}
+
+.leaderboard {
+  display: flex;
+  flex-flow: column wrap;
+  align-content: center;
+  align-self: flex-start;
+  box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.219);
+  margin-left: 250px;
+  margin-top: 45px;
+  width: 300px;
+  height: 600px;
+  background-color: rgb(143, 134, 134);
+}
+
+.lbTitle {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px black;
+  height: 40px;
+}
