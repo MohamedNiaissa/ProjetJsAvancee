@@ -80,6 +80,7 @@ class GridPatern {
     }
    
     async moveBullet(position){
+
         const gridCase = document.querySelectorAll("#case");
         let positionSheep = position +7;
         
@@ -189,7 +190,7 @@ class GridPatern {
         const gridCase = document.querySelectorAll("#case");
 
         // console.log("-----------------")
-        this.patern.forEach(index => {
+        this.clonePaternEnnemiesShip.forEach(index => {
             if(this.newRow) this.sideReached = null;
             else if([6,13,20,27,34,41,48,55].indexOf(index + this.mov) != -1) this.sideReached = "right";
             else if([0,7,14,21,28,35,42,49].indexOf(index + this.mov) != -1)  this.sideReached = "left";
@@ -199,7 +200,7 @@ class GridPatern {
         this.newRow = false;
         this.handleNextDirection();
 
-        this.patern.forEach(index => {
+        this.clonePaternEnnemiesShip.forEach(index => {
             // console.log(index + this.mov)
             if(index + this.mov > 55) return this.gameOver = true;
         })
@@ -236,7 +237,7 @@ class GridPatern {
     getListPosShip(mooveShipEnnemie){
         this.listeposEnnemyShip.length = 0;
 
-        this.patern.forEach(i => {
+        this.clonePaternEnnemiesShip.forEach(i => {
             if(!(i+mooveShipEnnemie === NaN)){this.listeposEnnemyShip.push(i+mooveShipEnnemie)}
 
         })
@@ -279,6 +280,8 @@ class GridPatern {
                         console.log( "pos bullet = " + tabPosBullet[b] )
                         sortBoucle = true;
                         gridCase[tabPosBullet[b]].style.background = 'red';
+                        this.clonePaternEnnemiesShip.splice(this.clonePaternEnnemiesShip.indexOf(tabPosBullet[b]-this.mov),1)
+
                     
                     } 
                  if(sortBoucle){break}
@@ -330,7 +333,7 @@ async function loop() {
     await sleep(1300);
     initGrid.handleMovementPatern();
     if(initGrid.gameOver) {
-        // window.alert("Game over !");
+        window.alert("Game over !");
         return 0;
     }
     loop();
