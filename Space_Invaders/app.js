@@ -20,6 +20,7 @@ class GridPatern {
         this.posPlayerShip=[];
         this.looseaudio = new Audio('/Projet/Space_Invaders/ressources/gameover.wav');
         this.ambiance = new Audio("/Projet/Space_Invaders/ressources/ambiance.mp3")
+        this.shoot = new Audio("/Projet/Space_Invaders/ressources/blaster.mp3")
 
 
 
@@ -52,12 +53,14 @@ class GridPatern {
             let score = document.querySelector('#score')
             let scoretxt = score.innerHTML 
             let scorepos = scoretxt.charAt(8)
+            let scorepos2 = scoretxt.charAt(-1)
      
             if(scoretxt == "Score :"){
                 window.alert("Game over ! (the ennemyship reach your line)\nYour score is "+ "0");
 
             }else{
-                window.alert("Game over ! (the ennemyship reach your line)\nYour score is "+scorepos.toString());
+                window.alert("Game over ! (the ennemyship reach your line)\n"+scoretxt);
+                
 
             }
             let contenu = document.querySelector('.contenu')
@@ -283,6 +286,7 @@ class GridPatern {
             }
 
             else if(e.keyCode == 32 && self.disableAttack ){
+                self.shoot.play();
                 self.playerAttack(position)
             }            
             
