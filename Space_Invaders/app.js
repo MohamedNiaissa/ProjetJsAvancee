@@ -19,11 +19,9 @@ class GridPatern {
         this.score = 0;
         this.samePosition=false;
         this.posPlayerShip=[];
+        this.basicLengthTabPattern = 12;
+
     }
-
-
-  
-
 
     initGame(){
         const initGrid = new GridPatern();
@@ -31,13 +29,9 @@ class GridPatern {
         initGrid.handlePlayerPatern();
         initGrid.getPosition();
         let bullet = initGrid.compareBulletToEnnemies();    
-        this.looseLine(initGrid)
-        
-        
+        this.looseLine(initGrid)   
     }
 
-  
-    
     looseLine(initGrid) {
         async function loop() {
          await sleep(500);
@@ -128,7 +122,7 @@ class GridPatern {
     async moveBullet(position){
 
         const gridCase = document.querySelectorAll("#case");
-        let positionSheep = position + 7;
+        let positionSheep = position + 7; //dans fonction playerAttack la position est celle de la balle i.e position-7,donc compensationif
         
 
         this.disableAttack = false;
@@ -142,12 +136,14 @@ class GridPatern {
                 let valuePosBullet = this.getMooveShipEnnemy(position-7*i);
                 this.listeposBullet.push(valuePosBullet)
                 
-                divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: green;');   
+                divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: white;');   
                 await sleep(700/7); // boucle parcouru 7 fois donc on divise par 7
                 divbullet.remove() 
                 console.log(this.samePosition)
                 this.samePosition = false
-            
+                console.log('this.p '+this.pattern)  
+                
+         
             }
 
             
@@ -160,7 +156,7 @@ class GridPatern {
                 let divbullet = gridCase[position-7*i].appendChild(document.createElement('div'));
                 let valuePosBullet = this.getMooveShipEnnemy(position-7*i);
                 this.listeposBullet.push(valuePosBullet)
-                divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: green;');   
+                divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: white;');   
                 await sleep(700/7);
                 divbullet.remove()     
             }
@@ -172,7 +168,7 @@ class GridPatern {
                 let divbullet = gridCase[position-7*i].appendChild(document.createElement('div'));
                 let valuePosBullet = this.getMooveShipEnnemy(position-7*i);
                 this.listeposBullet.push(valuePosBullet)
-                divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: green;');   
+                divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: white;');   
                 await sleep(700/7);
                 divbullet.remove()     
             }
@@ -185,7 +181,6 @@ class GridPatern {
 
   
     playerAttack(positionShip){
-
         let movBullet =  positionShip-7;  
         this.moveBullet(movBullet)
     }
@@ -193,10 +188,6 @@ class GridPatern {
 
     comparePosPlayerAndEnnemies(mooveShipEnnemie,posPlayer){
 
-        console.log("**************************")
-        console.log(mooveShipEnnemie)
-        console.log(posPlayer)
-        console.log("**************************")
         
         
         if(posPlayer != undefined && mooveShipEnnemie.length !=0){
@@ -211,7 +202,7 @@ class GridPatern {
                     let btn1 = document.querySelector('#button1') 
                     let btn2 = document.querySelector('#button2') 
                     btn1.addEventListener('click',function(){window.open("/Projet/Space_Invaders/index.html","_self")})
-                    btn2.addEventListener('click',function(){alert('See ya'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
+                    btn2.addEventListener('click',function(){alert('See you soon !'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
                 }
             }
         }
@@ -303,7 +294,6 @@ class GridPatern {
     handleMovementPatern() {
         const gridCase = document.querySelectorAll("#case");
 
-        // console.log("-----------------")
         this.pattern.forEach(index => {
             if(this.newRow) this.sideReached = null;
             else if([6,13,20,27,34,41,48,55].indexOf(index + this.mov) != -1) this.sideReached = "right";
@@ -315,7 +305,6 @@ class GridPatern {
         this.handleNextDirection();
 
         this.pattern.forEach(index => {
-            // console.log(index + this.mov)
             if(index + this.mov > 55) return this.gameOver = true;
         })
 
@@ -324,20 +313,18 @@ class GridPatern {
 
     handleNextDirection() {
         if(this.sideReached === null){ 
-            // this.clonemov++;
+         
             this.compareBulletToEnnemies(this.mov);
 
             return this.mov++;}
         if(this.sideReached === "right"){   
             this.boolEnnemies = "true"          
-            // this.clonemov--;
             this.compareBulletToEnnemies(this.mov);
 
             return this.mov--;}
         if(this.sideReached === "left") {        
             this.boolEnnemies = "false"          
 
-            // this.clonemov+=7;
             this.compareBulletToEnnemies(this.mov);
 
             this.newRow = true; return this.mov += 7; }
@@ -433,30 +420,14 @@ class GridPatern {
             }
 
         }
-         
-        tabPosBullet.length =0; // reset le tableau a 0
-                   
+        tabPosBullet.length =0; // reset le tableau a 0              
     }
-
-   
-
-
 }
 
 let game = true;
 let grid = new GridPatern();
 grid.initGame()
-   // const initGrid = new GridPatern();
-    // initGrid.createGrid();
-    // initGrid.handlePlayerPatern();
-    // initGrid.getPosition();
-    
-    
-    
-    // // let bullet = initGrid.compareBulletToEnnemies();
-    // // initGrid.compareBothPositions(initGrid.compareBulletToEnnemies(),initGrid.compareBulletToEnnemies2())
-    // // initGrid.compareBulletToEnnemies2();
-    // // console.log("bullet = " + bullet)
+ 
     
    
 
