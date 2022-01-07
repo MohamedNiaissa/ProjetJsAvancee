@@ -314,13 +314,14 @@ class GameTimer {
      *@method runningTimer() => Recursive method for the timer cancelling itself at each iteration.
      */
 
-    #elapsedTime; #dateOrigin; #isStopped; #timerProcess;
+    #elapsedTime; #dateOrigin; #isStopped; #timerProcess; #timerTitle;
 
     constructor () {
         this.#elapsedTime = null;
         this.#dateOrigin = null;
         this.#isStopped = null;
         this.#timerProcess = null;
+        this.#timerTitle = document.querySelector(".timer");
     }
 
     setUp() {
@@ -332,9 +333,26 @@ class GameTimer {
     }
 
     #runningTimer() {
+
         if(this.#dateOrigin !== null) {
             this.#elapsedTime = Math.round((Date.now() - this.#dateOrigin)/1000);
         }
+
+        let turn = false;
+        let seconds = this.#elapsedTime - 1;
+        let minutes = 0;
+
+        while(seconds > 60) {
+            seconds = seconds - 60;
+            minutes++;
+        }
+
+        seconds === -1 ? seconds = seconds + 0.5 : null;
+        seconds < 0 ? turn = true : null;
+        minutes = minutes < 10 ? minutes = "0" + minutes : minutes;
+        seconds = seconds < 10 ? seconds = "0" + seconds : seconds;
+
+        turn ? null : this.#timerTitle.innerHTML = `${minutes}:${seconds}`;
 
         cancelAnimationFrame(this.#timerProcess);
         this.#isStopped ? null : this.#timerProcess = requestAnimationFrame(() => this.#runningTimer());
