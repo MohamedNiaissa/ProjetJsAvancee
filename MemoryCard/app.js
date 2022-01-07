@@ -238,6 +238,14 @@ class GameCore {
     #showMenuIfGameEnded() {
         const thisClass = this;
         const time = GameTime.fetchTime();
+        let timeClone = time;
+        let minute = 0;
+        
+        while(timeClone > 60) {
+            timeClone = timeClone - 60;
+            minute++;
+        }
+
         const menuElements = GameReset.fetchMenuElement();
         let fragileDebug = false;
 
@@ -255,7 +263,9 @@ class GameCore {
             }
 
             if(menuElements.username.value === "") menuElements.submitBtn.disabled = true;
-            menuElements.congratsMsg.innerHTML = `Congratulation, you finished the Memory Card Game ${time} in seconds ! <br/><br/>`;
+            minute > 0 ? menuElements.congratsMsg.innerText = `Congratulation, you finished the Memory Card Game in ${minute} minutes and ${timeClone} seconds ! <br/><br/>`
+                       : menuElements.congratsMsg.innerHTML = `Congratulation, you finished the Memory Card Game in ${time} seconds ! <br/><br/>`;      
+            
             GameReset.display("visible");
             GameTime.reset();
 
@@ -391,7 +401,6 @@ class GameLeaderboard {
 
             clone.forEach(el => {
                 counter === 0 ? smallesttime = parseInt(el.accessKey) : null;
-                // console.log(smallesttime)
                 (parseInt(el.accessKey) <= smallesttime) ? smallesttime = parseInt(el.accessKey) : null;
                 counter++;
             })
