@@ -22,7 +22,7 @@ class GridPatern {
         this.looseaudio = new Audio('../Space_Invaders/ressources/gameover.wav');
         this.ambiance = new Audio("../Space_Invaders/ressources/ambiance.mp3");
         this.shoot = new Audio("../Space_Invaders/ressources/blaster.mp3");
-        this.winaudio = new Audio("../Space_Invaders/ressources/FFVictoryTheme.mp3");
+        // this.winaudio = new Audio("../Space_Invaders/ressources/FFVictoryTheme.mp3");
     }
 
     initGame(){
@@ -385,6 +385,11 @@ class GridPatern {
     }
 
     getListPosShipEnnemies(mooveShipEnnemie){
+        /**
+         * param: mooveShipEnnemie: the movement number, this number is add with the initial position
+         * each ennemy position is add to the list listeposEnnemyShip,when this operation end,the list is reset
+         * return: listeposEnnemyShip :the list with all of the ennemies position
+         */
         this.listeposEnnemyShip.length = 0;
 
         this.pattern.forEach(i => {
@@ -403,7 +408,7 @@ class GridPatern {
          * Check if the pattern list is empty , if it's the case then the player have won
          */
         if(this.pattern.length ==0){
-            this.winaudio.play();
+            // this.winaudio.play();
             await sleep(5)
             alert('You win\nYour score is '+this.score)
             let contenu = document.querySelector('.contenu')
