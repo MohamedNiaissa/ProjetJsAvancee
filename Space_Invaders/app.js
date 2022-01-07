@@ -20,8 +20,9 @@ class GridPatern {
         this.collision = false;
         this.posPlayerShip=[];
         this.looseaudio = new Audio('../Space_Invaders/ressources/gameover.wav');
-        this.ambiance = new Audio("../Space_Invaders/ressources/ambiance.mp3")
-        this.shoot = new Audio("../Space_Invaders/ressources/blaster.mp3")
+        this.ambiance = new Audio("../Space_Invaders/ressources/ambiance.mp3");
+        this.shoot = new Audio("../Space_Invaders/ressources/blaster.mp3");
+        this.winaudio = new Audio("../Space_Invaders/ressources/FFVictoryTheme.mp3");
     }
 
     initGame(){
@@ -397,11 +398,13 @@ class GridPatern {
     }
 
 
-    winGame(){
+    async winGame(){
         /**
          * Check if the pattern list is empty , if it's the case then the player have won
          */
         if(this.pattern.length ==0){
+            this.winaudio.play();
+            await sleep(5)
             alert('You win\nYour score is '+this.score)
             let contenu = document.querySelector('.contenu')
             contenu.remove()
