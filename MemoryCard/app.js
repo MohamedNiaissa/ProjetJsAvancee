@@ -319,7 +319,9 @@ class GameTimer {
     }
 
     #runningTimer() {
-        this.#elapsedTime = Math.round((Date.now() - this.#dateOrigin)/1000);
+        if(this.#dateOrigin !== null) {
+            this.#elapsedTime = Math.round((Date.now() - this.#dateOrigin)/1000);
+        }
 
         cancelAnimationFrame(this.#timerProcess);
         this.#isStopped ? null : this.#timerProcess = requestAnimationFrame(() => this.#runningTimer());
@@ -388,17 +390,21 @@ class GameLeaderboard {
             let counter = 0;
 
             clone.forEach(el => {
-                counter++ === 0 ? smallesttime = parseInt(el.accessKey) : null;
+                counter === 0 ? smallesttime = parseInt(el.accessKey) : null;
+                // console.log(smallesttime)
                 (parseInt(el.accessKey) <= smallesttime) ? smallesttime = parseInt(el.accessKey) : null;
+                counter++;
             })
 
             for(let index = 0; index < allCells.length; index++) {
-                if(parseInt(allCells[index].accessKey) === smallesttime) {
-                    sortedScore.push(allCells[index]);
-                    clone = clone.filter(item => item !== allCells[index]);
+                console.log(clone[index].accessKey + " === " + smallesttime)
+                if(parseInt(clone[index].accessKey) === smallesttime) {
+                    sortedScore.push(clone[index]);
+                    clone = clone.filter(item => item !== clone[index]);
                     break;
                 }
             }
+            console.log(clone)
         }
 
         sortedScore.forEach(el => { documentFragment.appendChild(el); })
