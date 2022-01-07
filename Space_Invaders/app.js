@@ -130,7 +130,7 @@ class GridPatern {
         let positionSheep = position + 7;
         
 
-        // this.disableAttack = false;
+        this.disableAttack = false;
 
         if(positionSheep <= 62 && positionSheep >=56){
             let max = 8;
