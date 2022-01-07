@@ -238,11 +238,11 @@ class GameCore {
     #showMenuIfGameEnded() {
         const thisClass = this;
         const time = GameTime.fetchTime();
-        let timeClone = time;
+        let second = time;
         let minute = 0;
         
-        while(timeClone > 60) {
-            timeClone = timeClone - 60;
+        while(second > 60) {
+            second = second - 60;
             minute++;
         }
 
@@ -255,7 +255,7 @@ class GameCore {
                 if(menuElements.username.value === "") return;
                 else if(fragileDebug) return;
                 
-                GameLB.addScore(time, GameLB.fetchUsername());
+                GameLB.addScore(minute, second, time, GameLB.fetchUsername());
                 requestAnimationFrame(() => { GameLB.fetchNewDiv().classList.add("slideFromLeft"); })
                 GameLB.sortScore();
                 GameLB.wasScoreAdded(true);
@@ -263,8 +263,11 @@ class GameCore {
             }
 
             if(menuElements.username.value === "") menuElements.submitBtn.disabled = true;
-            minute > 0 ? menuElements.congratsMsg.innerText = `Congratulation, you finished the Memory Card Game in ${minute} minutes and ${timeClone} seconds ! <br/><br/>`
-                       : menuElements.congratsMsg.innerHTML = `Congratulation, you finished the Memory Card Game in ${time} seconds ! <br/><br/>`;      
+            minute > 0 ? menuElements.congratsMsg.innerText = (`Congratulation, you finished the Memory Card Game in ${minute} minutes and ${second} seconds !`)
+                       : menuElements.congratsMsg.innerHTML = (`Congratulation, you finished the Memory Card Game in ${time} seconds !`);
+
+            menuElements.congratsMsg.appendChild(document.createElement("br"));
+            menuElements.congratsMsg.appendChild(document.createElement("br"));
             
             GameReset.display("visible");
             GameTime.reset();
@@ -282,7 +285,7 @@ class GameCore {
                 menuElements.submitBtn.removeEventListener("click", createUsernameCell);
 
                 if(GameLB.fetchWasScoreAdded() === false) {
-                    GameLB.addScore(time, "Unknown");
+                    GameLB.addScore(minute, second, time, "Unknown");
                     GameLB.fetchNewDiv().classList.add("slideFromLeft");
                     GameLB.sortScore();
                     GameLB.wasScoreAdded(true);
@@ -374,14 +377,15 @@ class GameLeaderboard {
         this.#wasScoreAdded = false;
     }
 
-    addScore(time, name) {
+    addScore(minute, second, time, name) {
         const newScoreCell = document.createElement("div");
         const score = document.createElement("p");
         this.#newCell = newScoreCell;
 
         newScoreCell.setAttribute("class", "cell");
         newScoreCell.accessKey = time;
-        score.innerHTML = `${name} : ${time} seconds.`;
+        if(minute > 0) score.innerHTML = `${name} : ${minute}min and ${second}sec.`;
+        else score.innerHTML = `${name} : ${time} seconds.`;
 
         newScoreCell.appendChild(score);
         this.#scoreTab.appendChild(newScoreCell);
@@ -406,14 +410,12 @@ class GameLeaderboard {
             })
 
             for(let index = 0; index < allCells.length; index++) {
-                console.log(clone[index].accessKey + " === " + smallesttime)
                 if(parseInt(clone[index].accessKey) === smallesttime) {
                     sortedScore.push(clone[index]);
                     clone = clone.filter(item => item !== clone[index]);
                     break;
                 }
             }
-            console.log(clone)
         }
 
         sortedScore.forEach(el => { documentFragment.appendChild(el); })
