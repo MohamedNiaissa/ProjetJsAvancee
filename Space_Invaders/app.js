@@ -36,7 +36,15 @@ class GridPatern {
          if(initGrid.gameOver) {
             let score = document.querySelector('#score')
             let scoretxt = score.innerHTML 
-            window.alert("Game over ! (the ennemyship reach your line)\nYour score is "+scoretxt);
+            let scorepos = scoretxt.charAt(8)
+     
+            if(scoretxt == "Score :"){
+                window.alert("Game over ! (the ennemyship reach your line)\nYour score is "+ "0");
+
+            }else{
+                window.alert("Game over ! (the ennemyship reach your line)\nYour score is "+scorepos.toString());
+
+            }
             let contenu = document.querySelector('.contenu')
             contenu.remove()
             let fin = document.querySelector('.fin')
