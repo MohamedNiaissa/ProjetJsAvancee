@@ -221,14 +221,7 @@ class GameCore {
 
         setTimeout(function() {
 
-            menuElements.congratsMsg.innerHTML = `Congratulation, you finished the Memory Card Game ${time} in seconds ! <br/><br/>`;
-            GameReset.display("visible");
-            GameTime.reset();
-
-            menuElements.username.addEventListener("keyup", (e) => { GameLB.setUsername(e.target.value); })
-            menuElements.submitBtn.addEventListener("click", debugDuplicate)
-
-            function debugDuplicate() {
+            function createUsernameCell() {
                 console.log(GameLB.fetchUsername())
                 GameLB.addScore(time, GameLB.fetchUsername());
                 requestAnimationFrame(() => { GameLB.fetchNewDiv().classList.add("animatepls"); })
@@ -236,12 +229,18 @@ class GameCore {
                 GameLB.wasScoreAdded(true);
             }
 
+            menuElements.congratsMsg.innerHTML = `Congratulation, you finished the Memory Card Game ${time} in seconds ! <br/><br/>`;
+            GameReset.display("visible");
+            GameTime.reset();
+
+            menuElements.username.addEventListener("keyup", (e) => { GameLB.setUsername(e.target.value); })
+            menuElements.submitBtn.addEventListener("click", createUsernameCell);
 
             menuElements.resetBtn.addEventListener("click", function() {
                 
                 thisClass.#cardsSwitch.forEach(card => { card.classList.remove("active"); })
                 menuElements.username.value = "";
-                menuElements.submitBtn.removeEventListener("click", debugDuplicate);
+                menuElements.submitBtn.removeEventListener("click", createUsernameCell);
 
                 if(GameLB.fetchWasScoreAdded() === false) {
                     GameLB.addScore(time, "Unknown");
