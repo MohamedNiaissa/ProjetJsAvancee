@@ -21,9 +21,6 @@ class GridPatern {
         this.looseaudio = new Audio('/Projet/Space_Invaders/ressources/gameover.wav');
         this.ambiance = new Audio("/Projet/Space_Invaders/ressources/ambiance.mp3")
         this.shoot = new Audio("/Projet/Space_Invaders/ressources/blaster.mp3")
-
-
-
     }
 
     initGame(){
@@ -40,28 +37,18 @@ class GridPatern {
     looseLine(initGrid) {
         let self = this
         async function loop() {
-
-
          await sleep(500);
          initGrid.handleMovementPatern();
 
          if(initGrid.gameOver) {
-
             self.looseaudio.play(); 
             await sleep(10)
-
             let score = document.querySelector('#score')
             let scoretxt = score.innerHTML 
-            let scorepos = scoretxt.charAt(8)
-            let scorepos2 = scoretxt.charAt(-1)
-     
             if(scoretxt == "Score :"){
                 window.alert("Game over ! (the ennemyship reach your line)\nYour score is "+ "0");
-
             }else{
                 window.alert("Game over ! (the ennemyship reach your line)\n"+scoretxt);
-                
-
             }
             let contenu = document.querySelector('.contenu')
             contenu.remove()
@@ -204,35 +191,34 @@ class GridPatern {
 
 
     async comparePosPlayerAndEnnemies(mooveShipEnnemie,posPlayer){
-       
         if(posPlayer != undefined && mooveShipEnnemie.length !=0){
             for(var i =0;i<mooveShipEnnemie.length;i++){
                 if(mooveShipEnnemie[i] == posPlayer){
-
-                    this.looseaudio.play()
-                    await sleep(10)
-                    alert('Game Over ! (Collision with the ennemyShip)\nYour score is '+this.score);
-                    let contenu = document.querySelector('.contenu')
-                    contenu.remove()
-                    let fin = document.querySelector('.fin')
-                    fin.style.display = "inline"
-                     
-                    let btn1 = document.querySelector('#button1') 
-                    let btn2 = document.querySelector('#button2') 
-                    btn1.addEventListener('click',function(){window.location.reload()})
-                    btn2.addEventListener('click',function(){alert('See you soon !'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
+                    this.endGame();        
                 }
             }
         }
        
     }
 
+    async endGame(){
+        this.looseaudio.play()
+        await sleep(5)
+        alert('Game Over ! (Collision with the ennemyShip)\nYour score is '+this.score);
+        let contenu = document.querySelector('.contenu')
+        contenu.remove()
+        let fin = document.querySelector('.fin')
+        fin.style.display = "inline"
+        let btn1 = document.querySelector('#button1') 
+        let btn2 = document.querySelector('#button2') 
+        btn1.addEventListener('click',function(){window.location.reload()})
+        btn2.addEventListener('click',function(){alert('See you soon !'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
+    }
+
 
     getPosition(){
         let position = 59;
         let self = this;
-        
-
         document.addEventListener("keyup",function(e){
             if(e.keyCode == 39){  //right
                 if(position !== 48 && position !== 55  && position !== 62){
@@ -302,10 +288,7 @@ class GridPatern {
         this.pattern.forEach(index => {
             let enemyShip = document.createElement('img');
             enemyShip.setAttribute("src", "./ressources/ennemies.png");
-
-         
             gridCase[index + this.mov].appendChild(enemyShip);
-
         })
     }
 
@@ -326,7 +309,6 @@ class GridPatern {
         this.pattern.forEach(index => {
             if(index + this.mov > 55) return this.gameOver = true;
         })
-
         this.handleEnemiesPatern();
     }
 
@@ -367,9 +349,6 @@ class GridPatern {
 
     }
 
-    getListPosBullet(){
-        return this.listeposBullet;
-    }
 
     winGame(){
         if(this.pattern.length ==0){
@@ -386,11 +365,9 @@ class GridPatern {
 
     }
 
-   
-
     scorePlayer(){
         let score = document.querySelector("#score");
-        score.innerHTML = "Score : " + this.score
+        score.innerHTML = "Score : " + this.score;
     }
 
    async  compareBulletToEnnemies(mooveShipEnnemie){
@@ -423,7 +400,6 @@ class GridPatern {
                         this.score++
                         this.scorePlayer();
                         this.winGame()
-                    
                     } 
                  if(sortBoucle){break}
                 }
