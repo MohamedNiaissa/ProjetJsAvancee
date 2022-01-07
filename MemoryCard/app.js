@@ -226,21 +226,28 @@ class GameCore {
             GameTime.reset();
 
             menuElements.username.addEventListener("keyup", (e) => { GameLB.setUsername(e.target.value); })
+            menuElements.submitBtn.addEventListener("click", debugDuplicate)
 
-            menuElements.submitBtn.addEventListener("click", function() {
+            function debugDuplicate() {
+                console.log(GameLB.fetchUsername())
                 GameLB.addScore(time, GameLB.fetchUsername());
                 requestAnimationFrame(() => { GameLB.fetchNewDiv().classList.add("animatepls"); })
                 GameLB.sortScore();
                 GameLB.wasScoreAdded(true);
-            }, {once : true})
+            }
+
 
             menuElements.resetBtn.addEventListener("click", function() {
                 
                 thisClass.#cardsSwitch.forEach(card => { card.classList.remove("active"); })
+                menuElements.username.value = "";
+                menuElements.submitBtn.removeEventListener("click", debugDuplicate);
 
                 if(GameLB.fetchWasScoreAdded() === false) {
                     GameLB.addScore(time, "Unknown");
+                    GameLB.fetchNewDiv().classList.add("animatepls");
                     GameLB.sortScore();
+                    GameLB.wasScoreAdded(true);
                 }
                 
                 GameReset.display("hidden");
