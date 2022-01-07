@@ -45,7 +45,7 @@ class GridPatern {
          if(initGrid.gameOver) {
             let score = document.querySelector('#score')
             let scoretxt = score.innerHTML 
-            window.alert("Game over !\n Your score is "+scoretxt);
+            window.alert("Game over !\nYour score is "+scoretxt);
             let contenu = document.querySelector('.contenu')
             contenu.remove()
             let fin = document.querySelector('.fin')
@@ -202,7 +202,7 @@ class GridPatern {
         if(posPlayer != undefined && mooveShipEnnemie.length !=0){
             for(var i =0;i<mooveShipEnnemie.length;i++){
                 if(mooveShipEnnemie[i] == posPlayer){
-                    alert('Collision avec le vaisseau ennemie\nVotre score est de '+this.score);
+                    alert('Collision with the ennemyShip\nYour score is '+this.score);
                     let contenu = document.querySelector('.contenu')
                     contenu.remove()
                     let fin = document.querySelector('.fin')
