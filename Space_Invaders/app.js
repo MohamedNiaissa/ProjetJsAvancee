@@ -43,12 +43,13 @@ class GridPatern {
          await sleep(500);
          initGrid.handleMovementPatern();
          if(initGrid.gameOver) {
-            window.alert("Game over !\n");
+            let score = document.querySelector('#score')
+            let scoretxt = score.innerHTML 
+            window.alert("Game over !\n Your score is "+scoretxt);
             let contenu = document.querySelector('.contenu')
             contenu.remove()
             let fin = document.querySelector('.fin')
             fin.style.display = "inline"
-             
             let btn1 = document.querySelector('#button1') 
             let btn2 = document.querySelector('#button2') 
             btn1.addEventListener('click',function(){window.open("/Projet/Space_Invaders/index.html","_self")})
