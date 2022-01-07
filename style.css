@@ -1,0 +1,156 @@
+*, ::before, ::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: black;
+}
+
+.memoryCard > a {
+  width: 100%;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+	background: linear-gradient(to top, #3f2b4e, #161f33) no-repeat fixed;
+}
+
+.gameChoiceMenu{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gameChoiceTitle {
+  margin-top: 20px;
+  font-size: 3em;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 50%;
+  padding: 15px;
+  margin-top: 75px;
+  box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.219);
+  border-radius: 20px;
+  background-color: #c2c6db;
+}
+
+.titles {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.choice {
+  margin-top: 40px;
+  font-size: 2em;
+}
+
+.games {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.spaceInvadersLine {
+  width: 100%;
+  border-top: dashed black;
+  margin-top: 30px;
+}
+
+.spaceInvaders {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 35px;
+}
+
+.siInfos {
+  padding: 10px;
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.37);
+  background-color: #b7bac9;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.memoryCardLine {
+  width: 100%;
+  border-top: dashed black;
+  margin-top: 25px;
+}
+
+.memoryCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 35px;
+}
+
+.mcInfos {
+  padding: 10px;
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.37);
+  background-color: #b7bac9;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.boderAnimation, .link {
+  display: inline-block;
+  position: relative;
+  padding-bottom: 3px;
+  margin-right: 10px;
+  padding: 20px;
+  font-size: large;
+  text-decoration: none;
+}
+
+.boderAnimation:last-child, .link:last-child {
+  margin-right: 0;
+}
+
+.boderAnimation:after {
+  content: '';
+  display: block;
+  margin: auto;
+  height: 2px;
+  width: 0px;
+  transition: width 0.8s ease, background-color 0.81s ease;
+}
+
+.boderAnimation:before {
+  content: '';
+  display: block;
+  margin: auto;
+  left    : 0;
+  bottom  : 0;
+  height: 2px;
+  width: 0px;
+  transition: width 0.8s ease, background-color 0.8s ease;
+}
+
+.boderAnimation:hover:before {
+  width: 100%;
+  background: rgb(48, 43, 70);
+}
+
+.boderAnimation:hover:after {
+  width: 100%;
+  background: rgb(48, 43, 70);
+}
+
+.link {
+  border-radius: 3px;
+  font-weight: bold;
+}
+
+.link:hover {
+  background-color: #7b8aaa4f;
+}
+
+.animate {
+  transition: ease-in-out 1s;
+}
