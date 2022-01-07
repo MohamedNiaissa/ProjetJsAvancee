@@ -4,42 +4,44 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Index</title>
-
-    <style>
-        h1{
-            text-align: center;
-        }
-        .conteneur{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        div{
-            margin: 20px;
-        }
-    </style>
 </head>
 <body>
 
-    <h1> Bienvenue </h1>
+    <div class="gameChoiceMenu">
 
-    <div class="conteneur">
+        <div class="container">
 
-        <h2> Veuillez séléctionner un mode de jeu : </h2>
+            <h1 class="gameChoiceTitle">Welcome !</h1>
 
-        <div class="spaceivaders">
-            <a href="/Projet/Space_Invaders/index.html"> Space Invaders </a> 
-        </div>
+            <h2 class="choice">Please select any game below :</h2>
+
+            <div class="games"> 
+                <div class="spaceinvaders">
+                    <div class="btn">
+                        <a class="test" href="./Space_Invaders/index.html"> Space Invaders </a> 
+                    </div>
+                </div>
     
-        <div class="memorycard">
-           <a href="/Projet/MemoryCard/index.html"> Memory Card </a> 
+                <div class="memorycard">
+                    <div class="btn">
+                        <a class="test" href="./MemoryCard/index.html"> Memory Card </a> 
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </div>
-
-   
     
+    <script>
+        const getButton = document.querySelectorAll(".test");
+        [...getButton].forEach(el => {
+            el.addEventListener("mousemove", function() {
+                el.classList.add("animate");
+            }, {once: true})
+        })
+    </script>
 </body>
 </html>
