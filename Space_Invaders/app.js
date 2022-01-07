@@ -19,19 +19,23 @@ class GridPatern {
         this.collision = false;
         this.posPlayerShip=[];
         this.looseaudio = new Audio('/Projet/Space_Invaders/ressources/gameover.wav');
+        this.ambiance = new Audio("/Projet/Space_Invaders/ressources/ambiance.mp3")
+
 
 
     }
 
     initGame(){
+        this.ambiance.play();
         const initGrid = new GridPatern();
         initGrid.createGrid();
         initGrid.handlePlayerPatern();
         initGrid.getPosition();
         let bullet = initGrid.compareBulletToEnnemies();    
+        
         this.looseLine(initGrid)   
     }
-
+ 
     looseLine(initGrid) {
         let self = this
         async function loop() {
@@ -39,7 +43,9 @@ class GridPatern {
 
          await sleep(500);
          initGrid.handleMovementPatern();
+
          if(initGrid.gameOver) {
+
             self.looseaudio.play(); 
             await sleep(10)
 
@@ -199,6 +205,7 @@ class GridPatern {
         if(posPlayer != undefined && mooveShipEnnemie.length !=0){
             for(var i =0;i<mooveShipEnnemie.length;i++){
                 if(mooveShipEnnemie[i] == posPlayer){
+
                     this.looseaudio.play()
                     await sleep(10)
                     alert('Game Over ! (Collision with the ennemyShip)\nYour score is '+this.score);
