@@ -16,10 +16,21 @@ body {
   flex-flow: column wrap;
 }
 
+.gameTitle {
+  margin-top: 10px;
+}
+
 h1{
   color:#D5D8ED;
   margin-top: 40px;
   font-size: 3em;
+}
+
+.gameBody {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: row wrap;
 }
 
 .grille {
@@ -38,15 +49,17 @@ h1{
   transition: ease-in-out 0.3s;
   border-radius: 20px;
 }
-.cover{
-  background: radial-gradient(#2F2F2F, #1A1819);
-  width: 40px;
-  height: auto;
-  border-radius: 20px;
-}
 
 .carte:hover {
   transform: scale(1.03);
+}
+
+.cover{
+  background: radial-gradient(#2F2F2F, #1A1819);
+  position: inherit;
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
 }
 
 .double-face {
@@ -55,6 +68,10 @@ h1{
   height: 100%;
   transition: transform 0.6s;
   transform-style: preserve-3d;
+}
+
+.active {
+  transform: rotateY(180deg)
 }
 
 .face, .arriere {
@@ -88,24 +105,73 @@ h1{
   font-size: 80px;
 }
 
-.active {
-  transform: rotateY(180deg)
-}
-
-.cover {
-  position: inherit;
-  width: 100%;
-}
-
-.title {
-  margin-top: 10px;
-}
-
-.gameBody {
+.menu {
+  background-color: #c2c6db;
+  margin: 70px 0 0;
+  border-radius: 20px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  flex-flow: column;
+  box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.219);
+}
+
+.congratsMsg {
+  height: auto;
+  padding: 15px 0 0 0 ;
+  font-size: large;
+  align-self: center;
+}
+
+.userDiv {
+  width: 100%;
+  padding: 15px 15px;
+  display: flex;
+}
+
+.userMsg {
+  font-size: large;
+  align-self: center;
+  margin-right: 10px;
+}
+
+.usernameInput {
+  height: 3vh;
+  font-size: large;
+  align-self: center;
+  margin-right: 10px;
+}
+
+.submitBtn {
+  width: 15%;
+  height: 3vh;
+  align-self: center;
+}
+
+.actionDiv {
+  width: 100%;
+  padding: 15px 15px;
+  display: flex;
   flex-flow: row wrap;
+}
+
+.nextActionMsg {
+  font-size: large;
+  align-self: center;
+  margin-right: 10px;
+}
+
+.resetBtn {
+  width: 15%;
+  height: 3vh;
+  align-self: center;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.visible {
+  visibility: visible;
 }
 
 .leaderboard {
@@ -153,28 +219,12 @@ h1{
   background: #373944;
 }
 
-.cell {
-  width: 100%;
-  height: 50;
-
-}
-
-.animatepls {
+.slideFromLeft {
   animation-name: move;
   animation-duration: 1s;
   -webkit-animation-name: move;
   -webkit-animation-duration: 1.5s;
   position: relative;
-}
-
-.cell > p {
-  width: 98.5%;
-  padding: 15px 15px;
-  margin: 2px 2px 4px 2px;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.219);
-  border: solid 1px black;
-  border-radius: 5px;
-  background-color: #8383af;
 }
 
 @keyframes move {
@@ -195,82 +245,21 @@ h1{
   }
 }
 
+.cell {
+  width: 100%;
+  height: 50;
+}
+
+.cell > p {
+  width: 98.5%;
+  padding: 15px 15px;
+  margin: 2px 2px 4px 2px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.219);
+  border: solid 1px black;
+  border-radius: 5px;
+  background-color: #8383af;
+}
+
 .cell > p:hover {
   background-color: #59598d;
-}
-
-.msgContainer {
-  background-color: #c2c6db;
-  margin: 70px 0 0;
-  border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  flex-flow: column;
-  box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.219);
-}
-
-.RContainer {
-  width: 100%;
-  padding: 15px 15px;
-  display: flex;
-  flex-flow: row wrap;
-}
-
-.lbContainer {
-  width: 100%;
-  padding: 15px 15px;
-  display: flex;
-}
-
-.Rbtn {
-  width: 15%;
-  height: 3vh;
-  align-self: center;
-}
-
-.Wpara {
-  font-size: large;
-  align-self: center;
-  margin-right: 10px;
-}
-
-.lbBtn {
-  width: 15%;
-  height: 3vh;
-  align-self: center;
-}
-
-.username {
-  height: 3vh;
-  align-self: center;
-  margin-right: 10px;
-}
-
-.score {
-  font-size: large;
-  align-self: center;
-  margin-right: 10px;
-}
-
-.hidden {
-  display: none;
-}
-
-.visible {
-  display: inline;
-}
-
-.winMsg {
-  height: auto;
-  padding: 15px 0 0 0 ;
-  font-size: large;
-  align-self: center;
-}
-
-.pseudo-hidden {
-  visibility: hidden;
-}
-
-.pseudo-visible {
-  visibility: visible;
 }

@@ -13,7 +13,7 @@ class GameResetOption {
      * We also added a way to get the HTMLButtonElement outside of the class.
      * 
      *@property {boolean} elementsCreated => Define when the div and the button are added to the HTML.
-     *@property {HTMLDivElement} msgContainer => Create a div that will contain a a paragraph and a button.
+     *@property {HTMLDivElement} menu => Create a div that will contain a a paragraph and a button.
      *@property {HTMLButtonElement} resetBtn => Create a button with the purpose of resetting the game board.
      *@property {HTMLButtonElement} fetchResetBtn => Used to store the button so we can do things with it later on.
      */
@@ -40,7 +40,7 @@ class GameResetOption {
 
         let count = 0;
         const elements = [this.#menu,this.#congratsMsg,this.#userDiv,this.#userMsg,this.#username,this.#submitBtn,this.#actionDiv,this.#nextActionMsg,this.#resetBtn];
-        const elClasses = ["msgContainer pseudo-hidden","winMsg pseudo-hidden","lbContainer pseudo-hidden","score","username","lbBtn","RContainer pseudo-hidden","Wpara","Rbtn"];
+        const elClasses = ["menu hidden","congratsMsg hidden","userDiv hidden","userMsg","usernameInput","submitBtn","actionDiv hidden","nextActionMsg","resetBtn"];
 
         var documentFragment = document.createDocumentFragment();
         documentFragment.appendChild(this.#menu);
@@ -61,8 +61,8 @@ class GameResetOption {
 
     display(prop) {
         let addClass, removeClass;
-        prop === "visible" ? (addClass = "pseudo-visible", removeClass = "pseudo-hidden" ) 
-                           : (addClass = "pseudo-hidden", removeClass = "pseudo-visible");
+        prop === "visible" ? (addClass = "visible", removeClass = "hidden" ) 
+                           : (addClass = "hidden", removeClass = "visible");
 
         this.#menu.classList.replace(removeClass, addClass);
         this.#actionDiv.classList.replace(removeClass, addClass);
@@ -224,7 +224,7 @@ class GameCore {
             function createUsernameCell() {
                 console.log(GameLB.fetchUsername())
                 GameLB.addScore(time, GameLB.fetchUsername());
-                requestAnimationFrame(() => { GameLB.fetchNewDiv().classList.add("animatepls"); })
+                requestAnimationFrame(() => { GameLB.fetchNewDiv().classList.add("slideFromLeft"); })
                 GameLB.sortScore();
                 GameLB.wasScoreAdded(true);
             }
@@ -244,7 +244,7 @@ class GameCore {
 
                 if(GameLB.fetchWasScoreAdded() === false) {
                     GameLB.addScore(time, "Unknown");
-                    GameLB.fetchNewDiv().classList.add("animatepls");
+                    GameLB.fetchNewDiv().classList.add("slideFromLeft");
                     GameLB.sortScore();
                     GameLB.wasScoreAdded(true);
                 }
@@ -309,7 +309,7 @@ class GameLeaderboard {
     #scoreTab; #newCell; #username; #wasScoreAdded;
 
     constructor() {
-        this.#scoreTab = document.querySelector(".lbScore");
+        this.#scoreTab = document.getElementById("lbScore");
         this.#newCell = null;
         this.#username = null;
         this.#wasScoreAdded = false;
