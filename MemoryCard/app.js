@@ -70,7 +70,7 @@ class GameResetOption {
         this.#congratsMsg.classList.replace(removeClass, addClass);
     }
 
-    fetchElement() {
+    fetchMenuElement() {
         const elements = {
             "congratsMsg": this.#congratsMsg, 
             "username": this.#username, 
@@ -205,7 +205,8 @@ class GameCore {
                         } else {
                             thisClass.#selectedCard = null;
                             thisClass.#cardsActive = 0;
-                            thisClass.#verifyIfGameEnded();
+
+                            if([...thisClass.#cardsSwitch].every(div => {return div.classList.contains("active")})) thisClass.#showMenuIfGameEnded();
                         }
                     }
                 }
@@ -213,47 +214,40 @@ class GameCore {
         })
     }
 
-    #verifyIfGameEnded() {
+    #showMenuIfGameEnded() {
         const thisClass = this;
+        const time = GameTime.fetchTime();
+        const menuElements = GameReset.fetchMenuElement();
 
-        if([...thisClass.#cardsSwitch].every(div => {return div.classList.contains("active")})) {
+        setTimeout(function() {
 
-            const time = GameTime.fetchTime();
-            const elements = GameReset.fetchElement();
+            menuElements.congratsMsg.innerHTML = `Congratulation, you finished the Memory Card Game ${time} in seconds ! <br/><br/>`;
+            GameReset.display("visible");
+            GameTime.reset();
 
-            setTimeout(function() {
+            menuElements.username.addEventListener("keyup", (e) => { GameLB.setUsername(e.target.value); })
 
-                elements.congratsMsg.innerHTML = `Congratulation, you finished the Memory Card Game ${time} in seconds ! <br/><br/>`;
-                GameReset.display("visible");
-                GameTime.reset();
+            menuElements.submitBtn.addEventListener("click", function() {
+                GameLB.addScore(time, GameLB.fetchUsername());
+                requestAnimationFrame(() => { GameLB.fetchNewDiv().classList.add("animatepls"); })
+                GameLB.sortScore();
+                GameLB.wasScoreAdded(true);
+            }, {once : true})
 
-                elements.username.addEventListener("keyup", (e) => {
-                    console.log(e.target.value)
-                    GameLB.setUsername(e.target.value);
-                })
+            menuElements.resetBtn.addEventListener("click", function() {
+                
+                thisClass.#cardsSwitch.forEach(card => { card.classList.remove("active"); })
 
-                elements.submitBtn.addEventListener("click", function() {
-                    GameLB.addScore(time, GameLB.fetchUsername());
-                    requestAnimationFrame(() => { GameLB.fetchNewDiv().classList.add("animatepls");})
-                    GameLB.orderScore();
-                    GameLB.toggleScoreWasAdded(true);
-                }, {once : true})
-
-                elements.resetBtn.addEventListener("click", function() {
-                    
-                    thisClass.#cardsSwitch.forEach(card => { card.classList.remove("active"); })
-
-                    if(GameLB.fetchVarScore() === false) {
-                        GameLB.addScore(time, "Unknown");
-                        GameLB.orderScore();
-                    }
-                    
-                    GameReset.display("hidden");
-                    GameLB.toggleScoreWasAdded(false);
-                    StartGameBoard(null);
-                }, {once : true})
-            }, 1000);
-        }
+                if(GameLB.fetchWasScoreAdded() === false) {
+                    GameLB.addScore(time, "Unknown");
+                    GameLB.sortScore();
+                }
+                
+                GameReset.display("hidden");
+                GameLB.wasScoreAdded(false);
+                StartGameBoard(null);
+            }, {once : true})
+        }, 1000);
     }
 }
 
@@ -306,78 +300,77 @@ class GameTimer {
 }
 
 class GameLeaderboard {
-    #getScoreContainer; #isScoreAdded; #getUsername; #newDiv;
+    #scoreTab; #newCell; #username; #wasScoreAdded;
 
     constructor() {
-        this.#getScoreContainer = document.querySelector(".lbScore");
-        this.#isScoreAdded = false;
-        this.#getUsername = null;
-        this.#newDiv = null;
+        this.#scoreTab = document.querySelector(".lbScore");
+        this.#newCell = null;
+        this.#username = null;
+        this.#wasScoreAdded = false;
     }
 
     addScore(time, name) {
         const newScoreCell = document.createElement("div");
-        this.#newDiv = newScoreCell;
         const score = document.createElement("p");
+        this.#newCell = newScoreCell;
 
         newScoreCell.setAttribute("class", "cell");
         newScoreCell.accessKey = time;
         score.innerHTML = `${name} : ${time} seconds.`;
 
         newScoreCell.appendChild(score);
-        this.#getScoreContainer.appendChild(newScoreCell);
+        this.#scoreTab.appendChild(newScoreCell);
     }
 
-    orderScore() {  
-        const allCells = this.#getScoreContainer.children;
-        const self = this;
+    sortScore() {
+        const allCells = this.#scoreTab.children;
+        
         let clone = Array.from(allCells);
-        let test = [];
+        let sortedScore = [];
+
+        var documentFragment = document.createDocumentFragment();
 
         for(let index = 0; index < allCells.length; index++) {
             let smallesttime;
             let counter = 0;
 
             clone.forEach(el => {
-                counter === 0 ? smallesttime = parseInt(el.accessKey) : null;
+                counter++ === 0 ? smallesttime = parseInt(el.accessKey) : null;
                 (parseInt(el.accessKey) <= smallesttime) ? smallesttime = parseInt(el.accessKey) : null;
-                counter++;
             })
 
-            for(let fetch = 0; fetch < allCells.length; fetch++) {
-                if(parseInt(allCells[fetch].accessKey) === smallesttime) {
-                    test.push(allCells[fetch]);
-                    clone = clone.filter(item => item !== allCells[fetch]);
+            for(let index = 0; index < allCells.length; index++) {
+                if(parseInt(allCells[index].accessKey) === smallesttime) {
+                    sortedScore.push(allCells[index]);
+                    clone = clone.filter(item => item !== allCells[index]);
                     break;
                 }
             }
         }
 
-        test.forEach(el => {
-            self.#getScoreContainer.appendChild(el);
-        })
+        sortedScore.forEach(el => { documentFragment.appendChild(el); })
+        this.#scoreTab.appendChild(documentFragment);
     }
 
-    fetchNewDiv() {
-        return this.#newDiv;
-    }
-
-    toggleScoreWasAdded(boolean) {
-        boolean ? this.#isScoreAdded = true : this.#isScoreAdded = false;
-        this.#getUsername = null;
-    }
-
-    fetchVarScore() {
-        return this.#isScoreAdded;
+    wasScoreAdded(boolean) {
+        boolean ? this.#wasScoreAdded = true : this.#wasScoreAdded = false;
+        this.#username = null;
     }
 
     setUsername(username) {
-        this.#getUsername = username;
-        console.log(this.#getUsername)
+        this.#username = username;
+    }
+
+    fetchNewDiv() {
+        return this.#newCell;
     }
 
     fetchUsername() {
-        return this.#getUsername;
+        return this.#username;
+    }
+
+    fetchWasScoreAdded() {
+        return this.#wasScoreAdded;
     }
 }
 
