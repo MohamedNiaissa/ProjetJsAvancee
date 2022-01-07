@@ -419,6 +419,9 @@ class GridPatern {
                         gridCase[tabPosBullet[b]].style.background = 'red';
                         this.samePosition = tabPosBullet[b]
                         this.pattern.splice(this.pattern.indexOf(tabPosBullet[b]-this.mov),1)
+                        await sleep(500)
+                        gridCase[tabPosBullet[b]].style.background = 'black';
+                      
                         this.score++
                         this.scorePlayer();
                         this.winGame()
