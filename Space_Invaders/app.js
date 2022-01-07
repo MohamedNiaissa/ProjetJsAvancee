@@ -1,7 +1,7 @@
 
-    async function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
+async function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 class GridPatern {
 
@@ -12,14 +12,11 @@ class GridPatern {
         this.newRow = false;
         this.gameOver = false;
         this.disableAttack = true;
-        this.clonemov = 0;
         this.listeposBullet = [];
         this.listeposEnnemyShip = [];
         this.boolEnnemies = false;
         this.score = 0;
-        this.samePosition=false;
         this.posPlayerShip=[];
-        this.basicLengthTabPattern = 12;
 
     }
 
@@ -39,15 +36,15 @@ class GridPatern {
          if(initGrid.gameOver) {
             let score = document.querySelector('#score')
             let scoretxt = score.innerHTML 
-            window.alert("Game over !\nYour score is "+scoretxt);
+            window.alert("Game over ! (the ennemyship reach your line)\nYour score is "+scoretxt);
             let contenu = document.querySelector('.contenu')
             contenu.remove()
             let fin = document.querySelector('.fin')
             fin.style.display = "inline"
             let btn1 = document.querySelector('#button1') 
             let btn2 = document.querySelector('#button2') 
-            btn1.addEventListener('click',function(){window.open("/Projet/Space_Invaders/index.html","_self")})
-            btn2.addEventListener('click',function(){alert('See ya'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
+            btn1.addEventListener('click',function(){window.location.reload()})
+            btn2.addEventListener('click',function(){alert('See you soon !'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
 
          }
             loop();
@@ -135,15 +132,9 @@ class GridPatern {
                 let divbullet = gridCase[position-7*i].appendChild(document.createElement('div'));   // -7*i car i bouge de 7 en 7 jusqu'en haut
                 let valuePosBullet = this.getMooveShipEnnemy(position-7*i);
                 this.listeposBullet.push(valuePosBullet)
-                
                 divbullet.setAttribute('style',' width: 10px;height: 10px;border-radius: 20px;background: white;');   
                 await sleep(700/7); // boucle parcouru 7 fois donc on divise par 7
                 divbullet.remove() 
-                console.log(this.samePosition)
-                this.samePosition = false
-                console.log('this.p '+this.pattern)  
-                
-         
             }
 
             
@@ -193,7 +184,7 @@ class GridPatern {
         if(posPlayer != undefined && mooveShipEnnemie.length !=0){
             for(var i =0;i<mooveShipEnnemie.length;i++){
                 if(mooveShipEnnemie[i] == posPlayer){
-                    alert('Collision with the ennemyShip\nYour score is '+this.score);
+                    alert('Game Over ! (Collision with the ennemyShip)\nYour score is '+this.score);
                     let contenu = document.querySelector('.contenu')
                     contenu.remove()
                     let fin = document.querySelector('.fin')
@@ -201,7 +192,7 @@ class GridPatern {
                      
                     let btn1 = document.querySelector('#button1') 
                     let btn2 = document.querySelector('#button2') 
-                    btn1.addEventListener('click',function(){window.open("/Projet/Space_Invaders/index.html","_self")})
+                    btn1.addEventListener('click',function(){window.location.reload()})
                     btn2.addEventListener('click',function(){alert('See you soon !'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
                 }
             }
@@ -359,12 +350,10 @@ class GridPatern {
             contenu.remove()
             let fin = document.querySelector('.fin')
             fin.style.display = "inline"
-             
             let btn1 = document.querySelector('#button1') 
             let btn2 = document.querySelector('#button2') 
-            btn1.addEventListener('click',function(){ window.open("/Projet/Space_Invaders/index.html","_self")})
-            btn2.addEventListener('click',function(){alert('See ya'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
-
+            btn1.addEventListener('click',function(){ window.location.reload()})
+            btn2.addEventListener('click',function(){alert('See you soon !'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
         }
 
     }
@@ -398,22 +387,16 @@ class GridPatern {
             for (let i=tabPosEnnemies.length-1 ;i>=0;i--){
                 for(let b =0; b<tabPosBullet.length;b++){
                     if(tabPosEnnemies[i] == tabPosBullet[b]){
-                        console.log( "TOUCHÉE" )
-                        console.log( "pos ennemies = " + tabPosEnnemies[i] )
-                        console.log( "pos bullet = " + tabPosBullet[b] )
-                        this.samePosition = true;
                         sortBoucle = true;
                         gridCase[tabPosBullet[b]].style.background = 'red';
-                        this.samePosition = tabPosBullet[b]
                         this.pattern.splice(this.pattern.indexOf(tabPosBullet[b]-this.mov),1)
                         await sleep(500)
                         gridCase[tabPosBullet[b]].style.background = 'none';
-                      
                         this.score++
                         this.scorePlayer();
                         this.winGame()
                     
-                    } else{this.samePosition = false}
+                    } 
                  if(sortBoucle){break}
                 }
                 if(sortBoucle){break}
