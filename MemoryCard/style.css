@@ -1,0 +1,265 @@
+*, ::before, ::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(to top, #3f2b4e, #161f33) no-repeat fixed; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.gameBoard {
+  display : flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column wrap;
+}
+
+.gameTitle {
+  margin-top: 10px;
+}
+
+h1{
+  color:#D5D8ED;
+  margin-top: 40px;
+  font-size: 3em;
+}
+
+.gameBody {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: row wrap;
+}
+
+.grille {
+  background-color: #D5D8ED;
+  display: grid;
+  grid-template: repeat(3, 200px) / repeat(4, 200px);
+  box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.219);
+  margin: 45px 0 0;
+  border-radius: 20px;
+}
+
+.carte {
+  perspective: 1000px;
+  margin: 5px;
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.219);
+  transition: ease-in-out 0.3s;
+  border-radius: 20px;
+}
+
+.carte:hover {
+  transform: scale(1.03);
+}
+
+.cover{
+  background: radial-gradient(#2F2F2F, #1A1819);
+  position: inherit;
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+}
+
+.double-face {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.active {
+  transform: rotateY(180deg)
+}
+
+.face, .arriere {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  transform: rotateX(0deg);
+  border-radius: 20px;
+}
+
+.face {
+  background: radial-gradient(#2F2F2F, #1A1819);
+  transform: rotateY(180deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.face img {
+  width: 120px;
+}
+
+.arriere {
+  background: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 80px;
+}
+
+.menu {
+  background-color: #c2c6db;
+  margin: 70px 0 0;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  flex-flow: column;
+  box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.219);
+}
+
+.congratsMsg {
+  height: auto;
+  padding: 15px 0 0 0 ;
+  font-size: large;
+  align-self: center;
+}
+
+.userDiv {
+  width: 100%;
+  padding: 15px 15px;
+  display: flex;
+}
+
+.userMsg {
+  font-size: large;
+  align-self: center;
+  margin-right: 10px;
+}
+
+.usernameInput {
+  height: 3vh;
+  font-size: large;
+  align-self: center;
+  margin-right: 10px;
+}
+
+.submitBtn {
+  width: 15%;
+  height: 3vh;
+  align-self: center;
+}
+
+.actionDiv {
+  width: 100%;
+  padding: 15px 15px;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.nextActionMsg {
+  font-size: large;
+  align-self: center;
+  margin-right: 10px;
+}
+
+.resetBtn {
+  width: 15%;
+  height: 3vh;
+  align-self: center;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.leaderboard {
+  display: flex;
+  flex-wrap: wrap;
+  align-self: flex-start;
+  margin: 45px 0 0 250px;
+  width: 300px;
+  height: 600px;
+  box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.219);
+  border-radius: 20px;
+}
+
+.lbTitle {
+  background-color: #D5D8ED;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid black;
+  border-bottom: 0px;
+  height: 40px;
+  border-radius: 20px 20px 0 0;
+}
+
+.lbScore {
+  background-color: #a6a9be;
+  width: 100%;
+  border: 3px solid black;
+  height: 560px;
+  overflow-y: scroll;
+  border-radius: 0 0 0 20px;
+}
+
+.scrollBar::-webkit-scrollbar {
+  width: 10px;
+  background-color: #8f93aa;
+}
+
+.scrollBar::-webkit-scrollbar-track {
+  background: #707285;
+}
+
+.scrollBar::-webkit-scrollbar-thumb {
+  background: #373944;
+}
+
+.slideFromLeft {
+  animation-name: move;
+  animation-duration: 1s;
+  -webkit-animation-name: move;
+  -webkit-animation-duration: 1.5s;
+  position: relative;
+}
+
+@keyframes move {
+  0% {
+    left: calc(100% + 100px);
+  }
+  100% { 
+    left: 0; 
+  }
+}
+
+@-webkit-keyframes move {
+  0% {
+    left: calc(100% + 300px);
+  }
+  100% { 
+    left: 0; 
+  }
+}
+
+.cell {
+  width: 100%;
+  height: 50;
+}
+
+.cell > p {
+  width: 98.5%;
+  padding: 15px 15px;
+  margin: 2px 2px 4px 2px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.219);
+  border: solid 1px black;
+  border-radius: 5px;
+  background-color: #8383af;
+}
+
+.cell > p:hover {
+  background-color: #59598d;
+}
