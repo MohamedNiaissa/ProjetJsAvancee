@@ -4,6 +4,7 @@ async function sleep(ms) {
 }
 
 class GridPatern {
+    
 
     constructor() {
         this.mov = 0;
@@ -16,34 +17,46 @@ class GridPatern {
         this.listeposEnnemyShip = [];
         this.boolEnnemies = false;
         this.score = 0;
+        this.collision = false;
         this.posPlayerShip=[];
-
+        this.looseaudio = new Audio('/Projet/Space_Invaders/ressources/gameover.wav');
+        this.ambiance = new Audio("/Projet/Space_Invaders/ressources/ambiance.mp3")
+        this.shoot = new Audio("/Projet/Space_Invaders/ressources/blaster.mp3")
     }
 
     initGame(){
+        /**
+         * init the game with the creation of the grid and all the function we need to start
+         */
+        this.ambiance.play();
         const initGrid = new GridPatern();
         initGrid.createGrid();
         initGrid.handlePlayerPatern();
         initGrid.getPosition();
         let bullet = initGrid.compareBulletToEnnemies();    
+        
         this.looseLine(initGrid)   
     }
-
+ 
     looseLine(initGrid) {
+        /**
+         * param: initgrid : the instance which was create at the beginning in initGame
+         * return : check if the ennemyShips remain is on the same line as the player, if so then the game stop
+         */
+        let self = this
         async function loop() {
          await sleep(500);
          initGrid.handleMovementPatern();
+
          if(initGrid.gameOver) {
+            self.looseaudio.play(); 
+            await sleep(10)
             let score = document.querySelector('#score')
             let scoretxt = score.innerHTML 
-            let scorepos = scoretxt.charAt(8)
-     
             if(scoretxt == "Score :"){
                 window.alert("Game over ! (the ennemyship reach your line)\nYour score is "+ "0");
-
             }else{
-                window.alert("Game over ! (the ennemyship reach your line)\nYour score is "+scorepos.toString());
-
+                window.alert("Game over ! (the ennemyship reach your line)\n"+scoretxt);
             }
             let contenu = document.querySelector('.contenu')
             contenu.remove()
@@ -64,6 +77,9 @@ class GridPatern {
     pattern = [1,2,3,4,5,8,9,10,11,12,16,18];
 
     createGrid() {
+        /**
+         * return: creation of the gridcase
+         */
         const container = document.querySelector('.grille');
         container.setAttribute("class", "grille container");
         
@@ -80,6 +96,10 @@ class GridPatern {
     }
 
     handlePlayerPatern(){
+
+        /**
+         * handle the movement of the player, with different conditions depending on the key pressed
+         */
         const gridCase = document.querySelectorAll("#case");
 
         let playerShip = document.createElement('img');
@@ -121,10 +141,17 @@ class GridPatern {
 
     }
     sleep(ms) {
+        /**
+         * Allow us to use the function async mov later
+         */
         return new Promise(resolve => setTimeout(resolve, ms));
     }
    
     async moveBullet(position){
+        /**
+         * based on the current position of the spaceship player , the bullet will firs appear just one line upper than the player's postion 
+         * and continue while the bullet hasn't reach the top
+         */
 
         const gridCase = document.querySelectorAll("#case");
         let positionSheep = position + 7; //dans fonction playerAttack la position est celle de la balle i.e position-7,donc compensationif
@@ -180,40 +207,58 @@ class GridPatern {
 
   
     playerAttack(positionShip){
+        /**
+         * call the function moveBullet in order to see the bullet 
+         */
         let movBullet =  positionShip-7;  
         this.moveBullet(movBullet)
     }
 
 
-    comparePosPlayerAndEnnemies(mooveShipEnnemie,posPlayer){
+    async comparePosPlayerAndEnnemies(mooveShipEnnemie,posPlayer){
+        /**
+         * param:
+         * mooveShipEnnemie: list with the ennemies position
+         * posPlayer : the current position of the player 
+         * Allow us to check if there is a collision between the player and the ennemies, each element of the list of ennemies position is compare to the player's position,
+         *  if so the game is stop,
+         * 
+         */
 
-        
-        
         if(posPlayer != undefined && mooveShipEnnemie.length !=0){
             for(var i =0;i<mooveShipEnnemie.length;i++){
                 if(mooveShipEnnemie[i] == posPlayer){
-                    alert('Game Over ! (Collision with the ennemyShip)\nYour score is '+this.score);
-                    let contenu = document.querySelector('.contenu')
-                    contenu.remove()
-                    let fin = document.querySelector('.fin')
-                    fin.style.display = "inline"
-                     
-                    let btn1 = document.querySelector('#button1') 
-                    let btn2 = document.querySelector('#button2') 
-                    btn1.addEventListener('click',function(){window.location.reload()})
-                    btn2.addEventListener('click',function(){alert('See you soon !'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
+                    this.endGame();        
                 }
             }
         }
        
     }
 
+    async endGame(){
+        /**
+         * Allow us to end the game, another page is created with the option of playAgain or not 
+         */
+        this.looseaudio.play()
+        await sleep(5)
+        alert('Game Over ! (Collision with the ennemyShip)\nYour score is '+this.score);
+        let contenu = document.querySelector('.contenu')
+        contenu.remove()
+        let fin = document.querySelector('.fin')
+        fin.style.display = "inline"
+        let btn1 = document.querySelector('#button1') 
+        let btn2 = document.querySelector('#button2') 
+        btn1.addEventListener('click',function(){window.location.reload()})
+        btn2.addEventListener('click',function(){alert('See you soon !'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
+    }
+
 
     getPosition(){
+        /**
+         * Each time a key is pressed, the position is push in the list posPlayerShip, if there is already one or several values in there the list is clean first and then the player's position is add
+         */
         let position = 59;
         let self = this;
-        
-
         document.addEventListener("keyup",function(e){
             if(e.keyCode == 39){  //right
                 if(position !== 48 && position !== 55  && position !== 62){
@@ -267,6 +312,7 @@ class GridPatern {
             }
 
             else if(e.keyCode == 32 && self.disableAttack ){
+                self.shoot.play();
                 self.playerAttack(position)
             }            
             
@@ -276,23 +322,23 @@ class GridPatern {
 
 
     handleEnemiesPatern() {
+        /**
+         * create the ennemies image at their respective positions
+         */
         const gridCase = document.querySelectorAll("#case");
-
-        
         this.pattern.forEach(index => {
             let enemyShip = document.createElement('img');
             enemyShip.setAttribute("src", "./ressources/ennemies.png");
-
-         
             gridCase[index + this.mov].appendChild(enemyShip);
-
         })
     }
 
     
     handleMovementPatern() {
+        /**
+         * The movement of the ennemies is controll by checking if they have reach the right side, if so the ennemies move to the left,if they have reach the left side, if so the ennemies go down and if they haven't reach any side then they move to the left or the right depending of the former position
+         */
         const gridCase = document.querySelectorAll("#case");
-
         this.pattern.forEach(index => {
             if(this.newRow) this.sideReached = null;
             else if([6,13,20,27,34,41,48,55].indexOf(index + this.mov) != -1) this.sideReached = "right";
@@ -306,7 +352,6 @@ class GridPatern {
         this.pattern.forEach(index => {
             if(index + this.mov > 55) return this.gameOver = true;
         })
-
         this.handleEnemiesPatern();
     }
 
@@ -331,6 +376,10 @@ class GridPatern {
     }
 
     getMooveShipEnnemy(mooveShipEnnemie){
+        /**
+         * param: moovShipEnnemie: position of the ennemy
+         * return: get the position of the ennemy
+         */
         return mooveShipEnnemie;    
     }
 
@@ -347,11 +396,11 @@ class GridPatern {
 
     }
 
-    getListPosBullet(){
-        return this.listeposBullet;
-    }
 
     winGame(){
+        /**
+         * Check if the pattern list is empty , if it's the case then the player have won
+         */
         if(this.pattern.length ==0){
             alert('You win\nYour score is '+this.score)
             let contenu = document.querySelector('.contenu')
@@ -366,14 +415,19 @@ class GridPatern {
 
     }
 
-   
-
     scorePlayer(){
+        /**
+         * Refresh the score written in the page, each time the player kill an enemy
+         */
         let score = document.querySelector("#score");
-        score.innerHTML = "Score : " + this.score
+        score.innerHTML = "Score : " + this.score;
     }
 
    async  compareBulletToEnnemies(mooveShipEnnemie){
+       /**
+        * param: mooveShipEnnemie : position of the ennemies at every moment
+        * Each element of the ennemies position and the bullet's position are compared one another, if there is a same value between those list then the ennemy is touched by the bullet
+        */
 
         const gridCase = document.querySelectorAll("#case");
 
@@ -403,7 +457,6 @@ class GridPatern {
                         this.score++
                         this.scorePlayer();
                         this.winGame()
-                    
                     } 
                  if(sortBoucle){break}
                 }
