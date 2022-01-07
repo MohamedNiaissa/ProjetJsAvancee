@@ -128,23 +128,49 @@ h1{
   display: flex;
 }
 
-.userMsg {
+.userMsg, .nextActionMsg {
   font-size: large;
   align-self: center;
   margin-right: 10px;
 }
 
-.usernameInput {
+.usernameInput, .submitBtn, .resetBtn {
   height: 3vh;
-  font-size: large;
   align-self: center;
-  margin-right: 10px;
+  font-size: large;
+  border-radius: 7px;
+  border-width: 0px;
+  border: solid 1px black;
+  background-color: #b0b6d3;
 }
 
-.submitBtn {
+.submitBtn, .resetBtn {
   width: 15%;
+  background-color: #9293be;
+  margin-left: 9px;
+}
+
+.selectionMenuBtn {
   height: 3vh;
-  align-self: center;
+  color: black;
+  padding: 0.5vh 0vh 0vh 0.5vh;
+  font-size: large;
+  border-radius: 7px;
+  border-width: 0px;
+  border: solid 1px black;
+  background-color: #b0b6d3;
+  width: 15%;
+  background-color: #9293be;
+  margin-left: 9px;
+  text-decoration: none;
+}
+
+.usernameInput:hover {
+  background-color: #bbc3e2;
+}
+
+.submitBtn:hover, .resetBtn:hover, .selectionMenuBtn:hover {
+  background-color: #acadd6;
 }
 
 .actionDiv {
@@ -152,18 +178,6 @@ h1{
   padding: 15px 15px;
   display: flex;
   flex-flow: row wrap;
-}
-
-.nextActionMsg {
-  font-size: large;
-  align-self: center;
-  margin-right: 10px;
-}
-
-.resetBtn {
-  width: 15%;
-  height: 3vh;
-  align-self: center;
 }
 
 .hidden {
@@ -203,6 +217,7 @@ h1{
   border: 3px solid black;
   height: 560px;
   overflow-y: scroll;
+  overflow-x: hidden; 
   border-radius: 0 0 0 20px;
 }
 

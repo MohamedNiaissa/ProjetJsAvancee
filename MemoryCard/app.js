@@ -23,13 +23,14 @@ class GameResetOption {
      *@property {HTMLDivElement} actionDiv => Create a div that will contain a question asking for an action and the reset button.
      *@property {HTMLParagraphElement} nextActionMsg => Create a paragraph asking for the next action.
      *@property {HTMLButtonElement} resetBtn => Create a button submitting a reset of the whole game to its origin, beside the leaderboard.
+     *@property {HTMLAnchorElement} selectionMenuBtn => Create an archor linking to the selection of two games.
      *@property {boolean} elementsCreated => Define when all of the elements above are implemented to the HTML.
      *
      *@method setUp() => Create a document fragment that will calculate each elements and add them to the gameBoard node.
      *@method display() => Based on the argument, hide or display the menu message based on the state of the game.
      */
 
-    #gameBoard; #menu; #congratsMsg; #userDiv; #userMsg; #username; #submitBtn; #actionDiv; #nextActionMsg; #resetBtn; #elementsCreated;    
+    #gameBoard; #menu; #congratsMsg; #userDiv; #userMsg; #username; #submitBtn; #actionDiv; #nextActionMsg; #resetBtn; #elementsCreated; #selectionMenuBtn;
 
     constructor() {
         this.#gameBoard     = document.getElementById("game");
@@ -43,6 +44,7 @@ class GameResetOption {
         this.#nextActionMsg = document.createElement("p");
         this.#resetBtn      = document.createElement("button");
 
+        this.#selectionMenuBtn = document.createElement("a");
         this.#elementsCreated = false;
     }
 
@@ -50,19 +52,21 @@ class GameResetOption {
         if(this.#elementsCreated !== false) return;
 
         let count = 0;
-        const elements = [this.#menu,this.#congratsMsg,this.#userDiv,this.#userMsg,this.#username,this.#submitBtn,this.#actionDiv,this.#nextActionMsg,this.#resetBtn];
-        const elClasses = ["menu hidden","congratsMsg hidden","userDiv hidden","userMsg","usernameInput","submitBtn","actionDiv hidden","nextActionMsg","resetBtn"];
+        const elements = [this.#menu,this.#congratsMsg,this.#userDiv,this.#userMsg,this.#username,this.#submitBtn,this.#actionDiv,this.#nextActionMsg,this.#resetBtn, this.#selectionMenuBtn];
+        const elClasses = ["menu hidden","congratsMsg hidden","userDiv hidden","userMsg","usernameInput","submitBtn","actionDiv hidden","nextActionMsg","resetBtn","selectionMenuBtn"];
 
         var documentFragment = document.createDocumentFragment();
         documentFragment.appendChild(this.#menu);
 
         this.#menu.append(this.#congratsMsg, this.#userDiv, this.#actionDiv);
         this.#userDiv.append(this.#userMsg, this.#username, this.#submitBtn);
-        this.#actionDiv.append(this.#nextActionMsg, this.#resetBtn);
+        this.#actionDiv.append(this.#nextActionMsg, this.#resetBtn, this.#selectionMenuBtn);
         this.#userMsg.innerHTML = "Please enter your username : ";
         this.#submitBtn.innerHTML = "Submit";
         this.#nextActionMsg.innerHTML = "Would you like to restart ? ";
         this.#resetBtn.innerHTML = "Restart";
+        this.#selectionMenuBtn.innerHTML = "Game Menu";
+        this.#selectionMenuBtn.href = "../index.html";
 
         elements.forEach(el => { el.setAttribute("class", elClasses[count++]); })
         this.#username.setAttribute("maxlength", "20");
