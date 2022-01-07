@@ -49,7 +49,7 @@ class GridPatern {
         // let k = 0; 
         let boolFin = true;
         async function loop() {
-         await sleep(100);
+         await sleep(1000);
          initGrid.handleMovementPatern();
          if(initGrid.gameOver) {
             window.alert("Game over !\n");
@@ -60,7 +60,7 @@ class GridPatern {
              
             let btn1 = document.querySelector('#button1') 
             let btn2 = document.querySelector('#button2') 
-            btn1.addEventListener('click',function(){boolFin = false; window.open("/Projet/Space_Invaders/index.html","_self")})
+            btn1.addEventListener('click',function(){window.open("/Projet/Space_Invaders/index.html","_self")})
             btn2.addEventListener('click',function(){alert('See ya'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
 
          }
@@ -316,6 +316,16 @@ class GridPatern {
     winGame(){
         if(this.pattern.length ==0){
             alert('You win\nYour score is '+this.score)
+            let contenu = document.querySelector('.contenu')
+            contenu.remove()
+            let fin = document.querySelector('.fin')
+            fin.style.display = "inline"
+             
+            let btn1 = document.querySelector('#button1') 
+            let btn2 = document.querySelector('#button2') 
+            btn1.addEventListener('click',function(){ window.open("/Projet/Space_Invaders/index.html","_self")})
+            btn2.addEventListener('click',function(){alert('See ya'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
+
         }
 
     }
@@ -331,6 +341,7 @@ class GridPatern {
         const gridCase = document.querySelectorAll("#case");
 
         let listeosShip = this.getListPosShip(mooveShipEnnemie);
+        console.log(listeosShip)
         let positionBullet = this.getListPosBullet(); 
 
 
@@ -374,6 +385,54 @@ class GridPatern {
         tabPosBullet.length =0;
                    
     }
+
+    async  comparePosPlayerAndEnnemies(mooveShipEnnemie,posPlayer){
+
+        const gridCase = document.querySelectorAll("#case");
+
+        let listeposShip = this.getListPosShip(mooveShipEnnemie);
+        let positionPlayer = posPlayer 
+
+
+        let element = false;
+    
+        if(listeposShip.length !=0 && positionPlayer != undefined){
+            element = true;
+        }else{
+            element = false;
+        }
+
+        let sortBoucle = false; 
+        if(element){
+            console.log('elem' )
+            
+            for (let i=0 ;i<listeposShip.length-1;i++){
+              
+                    if(listeposShip[i] == tabPosBullet[b]){
+                        console.log( "TOUCHÉE" )
+                        console.log( "pos ennemies = " + tabPosEnnemies[i] )
+                        console.log( "pos bullet = " + tabPosBullet[b] )
+                        this.samePosition = true;
+                        sortBoucle = true;
+                        gridCase[tabPosBullet[b]].style.background = 'red';
+                        this.samePosition = tabPosBullet[b]
+                        this.pattern.splice(this.pattern.indexOf(tabPosBullet[b]-this.mov),1)
+                        this.score++
+                        this.scorePlayer();
+                        this.winGame()
+                    
+                    } else{this.samePosition = false}
+                 if(sortBoucle){break}
+                } 
+            }
+
+        
+         
+        tabPosBullet.length =0;
+                   
+    }
+
+
 
 
 
