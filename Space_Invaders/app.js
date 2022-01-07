@@ -18,6 +18,7 @@ class GridPatern {
         this.boolEnnemies = false;
         this.score = 0;
         this.samePosition=false;
+        this.posPlayerShip=[];
     }
 
 
@@ -29,27 +30,17 @@ class GridPatern {
         initGrid.createGrid();
         initGrid.handlePlayerPatern();
         initGrid.getPosition();
-
-        let bullet = initGrid.compareBulletToEnnemies();
-        // initGrid.compareBothPositions(initGrid.compareBulletToEnnemies(),initGrid.compareBulletToEnnemies2())
-        //console.log("bullet = " + bullet)
-        
+        let bullet = initGrid.compareBulletToEnnemies();    
         this.looseLine(initGrid)
         
         
     }
 
   
-    playAgain(){
-        this.initGame()
-    }
     
- 
     looseLine(initGrid) {
-        // let k = 0; 
-        let boolFin = true;
         async function loop() {
-         await sleep(1000);
+         await sleep(500);
          initGrid.handleMovementPatern();
          if(initGrid.gameOver) {
             window.alert("Game over !\n");
@@ -100,13 +91,13 @@ class GridPatern {
         document.addEventListener("keyup",function(e){
             if(e.keyCode == 39){  //right
                 
-                if(position !== 48 && position !== 55 && position && position !== 62){
+                if(position !== 48 && position !== 55  && position !== 62){
                     position++;
                     playerShip.remove()
                     gridCase[position].appendChild(playerShip);
                 }
                 }else if(e.keyCode == 37 ){  //left
-                    if(position !== 42 && position !== 49 && position && position !== 56){
+                    if(position !== 42 && position !== 49 && position !== 56){
                         position--;
                         playerShip.remove()
                         gridCase[position].appendChild(playerShip);        
@@ -136,20 +127,17 @@ class GridPatern {
     async moveBullet(position){
 
         const gridCase = document.querySelectorAll("#case");
-        let positionSheep = position +7;
+        let positionSheep = position + 7;
         
 
-        this.disableAttack = false;
-        //console.log("position = " + positionSheep);
+        // this.disableAttack = false;
 
         if(positionSheep <= 62 && positionSheep >=56){
             let max = 8;
 
             for(var i = 0;i<max;i++){
-               
-               
-            
-                let divbullet = gridCase[position-7*i].appendChild(document.createElement('div'));
+                       
+                let divbullet = gridCase[position-7*i].appendChild(document.createElement('div'));   // -7*i car i bouge de 7 en 7 jusqu'en haut
                 let valuePosBullet = this.getMooveShipEnnemy(position-7*i);
                 this.listeposBullet.push(valuePosBullet)
                 
@@ -191,10 +179,7 @@ class GridPatern {
         }
         
         await sleep(300)  // Compensation avec les precedents await pour obtenir 1 sec
-        this.disableAttack = true;
-
- 
-    
+        this.disableAttack = true;    
     }
 
   
@@ -204,32 +189,97 @@ class GridPatern {
         this.moveBullet(movBullet)
     }
 
+
+    comparePosPlayerAndEnnemies(mooveShipEnnemie,posPlayer){
+
+        console.log("**************************")
+        console.log(mooveShipEnnemie)
+        console.log(posPlayer)
+        console.log("**************************")
+        
+        
+        if(posPlayer != undefined && mooveShipEnnemie.length !=0){
+            for(var i =0;i<mooveShipEnnemie.length;i++){
+                if(mooveShipEnnemie[i] == posPlayer){
+                    alert('Collision avec le vaisseau ennemie\nVotre score est de '+this.score);
+                    let contenu = document.querySelector('.contenu')
+                    contenu.remove()
+                    let fin = document.querySelector('.fin')
+                    fin.style.display = "inline"
+                     
+                    let btn1 = document.querySelector('#button1') 
+                    let btn2 = document.querySelector('#button2') 
+                    btn1.addEventListener('click',function(){window.open("/Projet/Space_Invaders/index.html","_self")})
+                    btn2.addEventListener('click',function(){alert('See ya'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
+                }
+            }
+        }
+       
+    }
+
+
     getPosition(){
         let position = 59;
         let self = this;
+        
+
         document.addEventListener("keyup",function(e){
             if(e.keyCode == 39){  //right
-                if(position !== 48 && position !== 55 && position && position !== 62){
+                if(position !== 48 && position !== 55  && position !== 62){
                     position++;
+                    if(self.posPlayerShip.length == 0){
+                        self.posPlayerShip.push(position)
+                    }else{
+                        for(var i=0;i<self.posPlayerShip.length;i++){
+                            self.posPlayerShip.splice(self.posPlayerShip[i],1)
+                        }
+                        self.posPlayerShip.push(position)
+                    }
                 }
             }else if(e.keyCode == 37 ){  //left
-                if(position !== 42 && position !== 49 && position && position !== 56){
+                if(position !== 42 && position !== 49 && position !== 56){
                     position--;
+                    if(self.posPlayerShip.length == 0){
+                        self.posPlayerShip.push(position)
+                    }else{
+                        for(var i=0;i<self.posPlayerShip.length;i++){
+                            self.posPlayerShip.splice(self.posPlayerShip[i],1)
+                        }
+                        self.posPlayerShip.push(position)
+                    }
                 }
             }else if(e.keyCode ==  38){ //up
                 if(position > 48){
                     position-=7;
+                    if(self.posPlayerShip.length == 0){
+                        self.posPlayerShip.push(position)
+                    }else{
+                        for(var i=0;i<self.posPlayerShip.length;i++){
+                            self.posPlayerShip.splice(self.posPlayerShip[i],1)
+                        }
+                        self.posPlayerShip.push(position)
+                    }
                 }
             }else if(e.keyCode == 40){ //down
                 if(position < 56){
                     position+=7;
+                    if(self.posPlayerShip.length == 0){
+                        self.posPlayerShip.push(position)
+                    }else{
+                        for(var i=0;i<self.posPlayerShip.length;i++){
+                            self.posPlayerShip.splice(self.posPlayerShip[i],1)
+                        }
+                        self.posPlayerShip.push(position)
+                    }
+
                 }
             }
 
             else if(e.keyCode == 32 && self.disableAttack ){
                 self.playerAttack(position)
-            }
-                
+            }            
+            
+
         });  
     }
 
@@ -273,20 +323,20 @@ class GridPatern {
 
     handleNextDirection() {
         if(this.sideReached === null){ 
-            this.clonemov++;
+            // this.clonemov++;
             this.compareBulletToEnnemies(this.mov);
 
             return this.mov++;}
         if(this.sideReached === "right"){   
             this.boolEnnemies = "true"          
-            this.clonemov--;
+            // this.clonemov--;
             this.compareBulletToEnnemies(this.mov);
 
             return this.mov--;}
         if(this.sideReached === "left") {        
             this.boolEnnemies = "false"          
 
-            this.clonemov+=7;
+            // this.clonemov+=7;
             this.compareBulletToEnnemies(this.mov);
 
             this.newRow = true; return this.mov += 7; }
@@ -297,7 +347,7 @@ class GridPatern {
         return mooveShipEnnemie;    
     }
 
-    getListPosShip(mooveShipEnnemie){
+    getListPosShipEnnemies(mooveShipEnnemie){
         this.listeposEnnemyShip.length = 0;
 
         this.pattern.forEach(i => {
@@ -305,6 +355,7 @@ class GridPatern {
 
         })
 
+        this.comparePosPlayerAndEnnemies(this.listeposEnnemyShip,this.posPlayerShip[this.posPlayerShip.length-1])   // On fait l'appel ici pour recuperer la liste des ennemies
         return this.listeposEnnemyShip;
 
     }
@@ -336,13 +387,12 @@ class GridPatern {
         let score = document.querySelector("#score");
         score.innerHTML = "Score : " + this.score
     }
+
    async  compareBulletToEnnemies(mooveShipEnnemie){
 
         const gridCase = document.querySelectorAll("#case");
 
-        let listeosShip = this.getListPosShip(mooveShipEnnemie);
-        console.log(listeosShip)
-        let positionBullet = this.getListPosBullet(); 
+        this.getListPosShipEnnemies(mooveShipEnnemie); // permet de rentrer les valeurs dans le tabPosEnnemies (push des elements)
 
 
         let tabPosBullet = this.listeposBullet;
@@ -356,9 +406,7 @@ class GridPatern {
         }
 
         let sortBoucle = false; 
-        if(element){
-            console.log('elem' )
-            
+        if(element){            
             for (let i=tabPosEnnemies.length-1 ;i>=0;i--){
                 for(let b =0; b<tabPosBullet.length;b++){
                     if(tabPosEnnemies[i] == tabPosBullet[b]){
@@ -382,59 +430,11 @@ class GridPatern {
 
         }
          
-        tabPosBullet.length =0;
+        tabPosBullet.length =0; // reset le tableau a 0
                    
     }
 
-    async  comparePosPlayerAndEnnemies(mooveShipEnnemie,posPlayer){
-
-        const gridCase = document.querySelectorAll("#case");
-
-        let listeposShip = this.getListPosShip(mooveShipEnnemie);
-        let positionPlayer = posPlayer 
-
-
-        let element = false;
-    
-        if(listeposShip.length !=0 && positionPlayer != undefined){
-            element = true;
-        }else{
-            element = false;
-        }
-
-        let sortBoucle = false; 
-        if(element){
-            console.log('elem' )
-            
-            for (let i=0 ;i<listeposShip.length-1;i++){
-              
-                    if(listeposShip[i] == tabPosBullet[b]){
-                        console.log( "TOUCHÉE" )
-                        console.log( "pos ennemies = " + tabPosEnnemies[i] )
-                        console.log( "pos bullet = " + tabPosBullet[b] )
-                        this.samePosition = true;
-                        sortBoucle = true;
-                        gridCase[tabPosBullet[b]].style.background = 'red';
-                        this.samePosition = tabPosBullet[b]
-                        this.pattern.splice(this.pattern.indexOf(tabPosBullet[b]-this.mov),1)
-                        this.score++
-                        this.scorePlayer();
-                        this.winGame()
-                    
-                    } else{this.samePosition = false}
-                 if(sortBoucle){break}
-                } 
-            }
-
-        
-         
-        tabPosBullet.length =0;
-                   
-    }
-
-
-
-
+   
 
 
 }
