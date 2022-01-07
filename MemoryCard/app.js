@@ -239,22 +239,30 @@ class GameCore {
         const thisClass = this;
         const time = GameTime.fetchTime();
         const menuElements = GameReset.fetchMenuElement();
+        let fragileDebug = false;
 
         setTimeout(function() {
 
             function createUsernameCell() {
-                console.log(GameLB.fetchUsername())
+                if(menuElements.username.value === "") return;
+                else if(fragileDebug) return;
+                
                 GameLB.addScore(time, GameLB.fetchUsername());
                 requestAnimationFrame(() => { GameLB.fetchNewDiv().classList.add("slideFromLeft"); })
                 GameLB.sortScore();
                 GameLB.wasScoreAdded(true);
+                fragileDebug = true;
             }
 
+            if(menuElements.username.value === "") menuElements.submitBtn.disabled = true;
             menuElements.congratsMsg.innerHTML = `Congratulation, you finished the Memory Card Game ${time} in seconds ! <br/><br/>`;
             GameReset.display("visible");
             GameTime.reset();
 
-            menuElements.username.addEventListener("keyup", (e) => { GameLB.setUsername(e.target.value); })
+            menuElements.username.addEventListener("keyup", (e) => {
+                menuElements.username.value === "" ? menuElements.submitBtn.disabled = true : menuElements.submitBtn.disabled = false;
+                GameLB.setUsername(e.target.value); 
+            })
             menuElements.submitBtn.addEventListener("click", createUsernameCell);
 
             menuElements.resetBtn.addEventListener("click", function() {
