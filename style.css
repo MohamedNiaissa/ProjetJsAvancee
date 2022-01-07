@@ -38,22 +38,67 @@ body {
   background-color: #c2c6db;
 }
 
+.titles {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .choice {
   margin-top: 40px;
   font-size: 2em;
 }
 
 .games {
+  width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
 }
-
-.spaceinvaders {
-  margin-top: 5px;
+.spaceInvadersLine {
+  width: 100%;
+  border-top: dashed black;
+  margin-top: 30px;
 }
 
-.btn, .test {
+.spaceInvaders {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 35px;
+}
+
+.siInfos {
+  padding: 10px;
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.37);
+  background-color: #b7bac9;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.memoryCardLine {
+  width: 100%;
+  border-top: dashed black;
+  margin-top: 25px;
+}
+
+.memoryCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 35px;
+}
+
+.mcInfos {
+  padding: 10px;
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.37);
+  background-color: #b7bac9;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.boderAnimation, .link {
   display: inline-block;
   position: relative;
   padding-bottom: 3px;
@@ -63,20 +108,20 @@ body {
   text-decoration: none;
 }
 
-.btn:last-child, .test:last-child {
+.boderAnimation:last-child, .link:last-child {
   margin-right: 0;
 }
 
-.btn:after {
+.boderAnimation:after {
   content: '';
   display: block;
   margin: auto;
   height: 2px;
   width: 0px;
-  transition: width 1s ease, background-color 1s ease;
+  transition: width 0.8s ease, background-color 0.81s ease;
 }
 
-.btn:before {
+.boderAnimation:before {
   content: '';
   display: block;
   margin: auto;
@@ -84,24 +129,25 @@ body {
   bottom  : 0;
   height: 2px;
   width: 0px;
-  transition: width 1s ease, background-color 1s ease;
+  transition: width 0.8s ease, background-color 0.8s ease;
 }
 
-.btn:hover:before {
+.boderAnimation:hover:before {
   width: 100%;
   background: rgb(48, 43, 70);
 }
 
-.btn:hover:after {
+.boderAnimation:hover:after {
   width: 100%;
   background: rgb(48, 43, 70);
 }
 
-.test {
+.link {
   border-radius: 3px;
+  font-weight: bold;
 }
 
-.test:hover {
+.link:hover {
   background-color: #7b8aaa4f;
 }
 

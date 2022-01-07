@@ -13,20 +13,49 @@
 
         <div class="container">
 
-            <h1 class="gameChoiceTitle">Welcome !</h1>
+            <div class="titles">
+                <h1 class="gameChoiceTitle">Welcome !</h1>
+                <h2 class="choice">Please select any game below :</h2>
+            </div>
 
-            <h2 class="choice">Please select any game below :</h2>
-
-            <div class="games"> 
-                <div class="spaceinvaders">
-                    <div class="btn">
-                        <a class="test" href="./Space_Invaders/index.html"> Space Invaders </a> 
+            <div class="games">
+                <div class="spaceInvadersLine">
+                    <div class="spaceInvaders">
+                        <p class="siInfos">
+                            Space Invaders is a fixed shooter in which the player moves a laser cannon horizontally
+                            <br>
+                            across the bottom of the screen and fires at aliens overhead. 
+                            <br>
+                            The aliens begin as three rows for a total of twelve aliens that move left and right as a group,
+                            <br>
+                            shifting downward each time they reach the left screen edge. 
+                            <br>
+                            The goal is to eliminate all of the aliens by shooting them.
+                            <br>
+                            The game ends immediately if the invaders reach the bottom of the screen.
+                        </p>
+                        <div class="boderAnimation">
+                            <a class="link" href="./Space_Invaders/index.html"> Space Invaders </a> 
+                        </div>
                     </div>
-                </div>
+                </div> 
     
-                <div class="memorycard">
-                    <div class="btn">
-                        <a class="test" href="./MemoryCard/index.html"> Memory Card </a> 
+                <div class="memoryCardLine">
+                    <div class="memoryCard">
+                        <p class="mcInfos">
+                            Memory Card is a card game in which all of the cards are laid face down on a surface and
+                            <br> 
+                            two cards are flipped face up over each turn.
+                            <br> 
+                            The goal of the game is to turn over pairs of matching cards, like a word, a picture..
+                            <br> 
+                            The game ends once every cards have a pair.
+                            <br> 
+                            This version possess 12 cards.
+                        </p>
+                        <div class="boderAnimation">
+                            <a class="link" href="./MemoryCard/index.html"> Memory Card </a> 
+                        </div>
                     </div>
                 </div>
             </div>
@@ -36,9 +65,10 @@
     </div>
     
     <script>
-        const getButton = document.querySelectorAll(".test");
+        const getButton = document.querySelectorAll(".link");
         [...getButton].forEach(el => {
             el.addEventListener("mousemove", function() {
+                console.log("this")
                 el.classList.add("animate");
             }, {once: true})
         })
