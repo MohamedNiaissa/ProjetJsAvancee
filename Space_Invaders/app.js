@@ -19,9 +19,9 @@ class GridPatern {
         this.score = 0;
         this.collision = false;
         this.posPlayerShip=[];
-        this.looseaudio = new Audio('/Projet/Space_Invaders/ressources/gameover.wav');
-        this.ambiance = new Audio("/Projet/Space_Invaders/ressources/ambiance.mp3")
-        this.shoot = new Audio("/Projet/Space_Invaders/ressources/blaster.mp3")
+        this.looseaudio = new Audio('../Space_Invaders/ressources/gameover.wav');
+        this.ambiance = new Audio("../Space_Invaders/ressources/ambiance.mp3")
+        this.shoot = new Audio("../Space_Invaders/ressources/blaster.mp3")
     }
 
     initGame(){
@@ -249,7 +249,7 @@ class GridPatern {
         let btn1 = document.querySelector('#button1') 
         let btn2 = document.querySelector('#button2') 
         btn1.addEventListener('click',function(){window.location.reload()})
-        btn2.addEventListener('click',function(){alert('See you soon !'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
+        btn2.addEventListener('click',function(){alert('See you soon !'); window.open("../index.html","_self");})  // _self -> open the window in the same tab
     }
 
 
