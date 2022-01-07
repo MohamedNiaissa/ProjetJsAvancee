@@ -52,7 +52,7 @@ class GridPatern {
             let btn1 = document.querySelector('#button1') 
             let btn2 = document.querySelector('#button2') 
             btn1.addEventListener('click',function(){window.location.reload()})
-            btn2.addEventListener('click',function(){alert('See you soon !'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
+            btn2.addEventListener('click',function(){alert('See you soon !'); window.open("../index.html","_self");})  // _self -> open the window in the same tab
 
          }
             loop();
@@ -201,7 +201,7 @@ class GridPatern {
                     let btn1 = document.querySelector('#button1') 
                     let btn2 = document.querySelector('#button2') 
                     btn1.addEventListener('click',function(){window.location.reload()})
-                    btn2.addEventListener('click',function(){alert('See you soon !'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
+                    btn2.addEventListener('click',function(){alert('See you soon !'); window.open("../index.html","_self");})  // _self -> open the window in the same tab
                 }
             }
         }
@@ -361,7 +361,7 @@ class GridPatern {
             let btn1 = document.querySelector('#button1') 
             let btn2 = document.querySelector('#button2') 
             btn1.addEventListener('click',function(){ window.location.reload()})
-            btn2.addEventListener('click',function(){alert('See you soon !'); window.open("/Projet/index.html","_self");})  // _self -> open the window in the same tab
+            btn2.addEventListener('click',function(){alert('See you soon !'); window.open("../index.html","_self");})  // _self -> open the window in the same tab
         }
 
     }
